@@ -10,73 +10,10 @@
 </head>
 <body>
 
-<div class=" navbar navbar-default navbar-fixed-top" id="publicHeaderApp">
-    <div class="container-fluid" >
+<div th:insert="publicHeader"/>
+<script th:src="@{/publicHeader.js}"></script>
 
-        <div class="row">
-            <div class="col-md-12 text-center" style="background-color: cornflowerblue; color: white">
-                <a th:href="@{/}" style="color: white"><h3>蜗牛书店</h3></a>
-            </div>
-        </div>
 
-        <div class="row" style="margin-top: 10px">
-            <div class="col-md-6">
-                <!--图书类型列表-->
-                <ol class="breadcrumb">
-                    <li v-for="bookType in bookTypes">
-                        <a href="" v-text="bookType.name"></a>
-                    </li>
-                </ol>
-            </div>
-
-            <div class="col-md-3">
-                <form action="" method="post" class="form-inline">
-                    <div class="form-group">
-                        <input type="text" name="searchName" class="form-control" id="search"
-                               placeholder="请输入搜索关键词">
-                    </div>
-                    <button type="submit" class="btn btn-default">todo搜索</button>
-                </form>
-            </div>
-
-            <div class="col-md-3">
-                todo
-                <a class="btn btn-default btn-sm" href="">登录</a>
-                <a class="btn btn-default btn-sm" href="">注册</a>
-                <a class="btn btn-default btn-sm" href="">我的购物车</a>
-                <a class="btn btn-default btn-sm" href="">我的订单</a>
-                <a class="btn btn-default btn-sm" href="">退出</a>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-    console.log(".........publicHeader...........");
-    let publicHeader = new Vue({
-        //element
-        el: "#publicHeaderApp",
-        data: {
-            bookTypes:[]
-        },
-        methods: {
-            initBookTypes(){
-                //局部变量,便于get方法中调用vue对象
-                let _this=this;
-                $.get("/booktype/all",function (data) {
-                    _this.bookTypes = data;
-                })
-            }
-        },
-        //vue生命周期中调用
-        created() {
-            this.initBookTypes();
-        }
-    });
-</script>
 
 <div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
 
@@ -139,25 +76,9 @@
 
 </script>
 
-<div class="navbar navbar-default navbar-fixed-bottom" id="publicfooterApp">
 
-    <div class="row">
-        <div class="col-md-12 text-center" style="background-color: cornflowerblue; color: white">
-            <h3>Copyright © 1922-2022 woniuxy.com</h3>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    console.log(".........publicfooter...........");
-    let publicfooter = new Vue({
-        el: "#publicfooterApp",
-        data: {},
-        methods: {},
-        created() {}
-    });
-</script>
+<div th:insert="publicFooter"/>
+<script th:src="@{/publicFooter.js}"></script>
 
 
 </body>
