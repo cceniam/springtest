@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @SpringBootApplication
-@Controller
+//@Controller
 public class QianTaiMain {
     public static void main(String[] args) {
         SpringApplication.run(QianTaiMain.class);
     }
-
-    @Autowired
-    UserService userService;
-
-    @RequestMapping("/")
-//    @ResponseBody
-    public String testCode(){
-//        List<User> userList = userService.list();
-
-        return "index";
-    }
+//
+//    @Autowired
+//    UserService userService;
+//
+//    @RequestMapping("/")
+////    @ResponseBody
+//    public String testCode(){
+////        List<User> userList = userService.list();
+//
+//        return "index";
+//    }
 
 }
