@@ -22,11 +22,11 @@ public class QianTaiMain {
     UserService userService;
 
     @RequestMapping("/")
-    @ResponseBody
-    public List<User> testCode(){
-        List<User> userList = userService.list();
+//    @ResponseBody
+    public String testCode(){
+//        List<User> userList = userService.list();
 
-        return userList;
+        return "index";
     }
 
 }

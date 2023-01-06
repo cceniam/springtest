@@ -13,6 +13,8 @@ spring:
       maxWait: 2000
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+  thymeleaf:
+    cache: false
 
 
 mybatis-plus:
