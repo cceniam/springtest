@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>singleBook</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+
+<div th:insert="publicHeader"/>
+<script th:src="@{/publicHeader.js}"></script>
+
+
+
+<div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
+
+    <div class="container">
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img th:src="${book.imgsrc}" alt="...">
+            </div>
+        </div>
+        <div class= "col-md-8">
+            <p>书名 : <span th:text="${book.name}"></span></p>
+            <p>作者 : <span th:text="${book.author}"></span></p>
+            <p>出版社 : <span th:text="${book.provider}"></span></p>
+            <p>价格 : <span th:text="${book.price}"></span></p>
+            <p>简介 : <span th:text="${book.detail}"></span></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-success" href="javascript:void(0)">todo加入购物车</a>
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    console.log(".........index...........")
+
+    new Vue({
+        el: "#app"
+        ,
+        data: {
+
+        }
+        ,
+        methods: {
+
+        }
+        ,
+        created(){
+
+        }
+
+    });
+
+
+</script>
+
+
+<div th:insert="publicFooter"/>
+<script th:src="@{/publicFooter.js}"></script>
+
+
+</body>
+</html>

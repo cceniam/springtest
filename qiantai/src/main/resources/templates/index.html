@@ -34,7 +34,7 @@
                         <p>书名:<span v-text="book.name">name</span></p>
                         <p>价格:<span v-text="book.price">price</span></p>
                         <p>
-                            <a class="btn btn-primary" href="">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-primary" :href="'/book/singleBook?bookId='+book.id">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
                             <a class="btn btn-success" href="">todo加入购物车</a>
                         </p>
                     </div>
