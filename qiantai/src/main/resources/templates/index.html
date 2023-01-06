@@ -89,16 +89,16 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4" v-for="(book,index) in topBooks">
                 <div class="thumbnail">
-                    <img src="" alt="..." class="col-sm-6 col-md-6">
+                    <img :src="book.imgsrc" alt="..." class="col-sm-6 col-md-6">
                     <div class="caption text-left">
-                        <p>排名:<span>第N</span></p>
-                        <p>书名:<span>name</span></p>
-                        <p>价格:<span>price</span></p>
+                        <p>排名:<span v-text="'No.'+(index+1)"></span></p>
+                        <p>书名:<span v-text="book.name">name</span></p>
+                        <p>价格:<span v-text="book.price">price</span></p>
                         <p>
                             <a class="btn btn-primary" href="">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a class="btn btn-success" href="">加入购物车</a>
+                            <a class="btn btn-success" href="">todo加入购物车</a>
                         </p>
                     </div>
                 </div>
@@ -118,10 +118,21 @@
         el: "#app"
         ,
         data: {
-
+            topBooks:[]
         }
         ,
-        methods: {}
+        methods: {
+            initTopBooks(){
+                let _this=this;
+                $.get("/book/topN?n=9",function (data) {
+                    _this.topBooks = data;
+                })
+            }
+        }
+        ,
+        created(){
+            this.initTopBooks();
+        }
 
     });
 
