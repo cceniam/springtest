@@ -11,8 +11,16 @@ public class BookTypeService {
     @Autowired
     BooktypeMapper booktypeMapper;
 
+    List<Booktype> booktypes;
+
     public List<Booktype> getAll(){
-        List<Booktype> booktypes = booktypeMapper.selectList(null);
+        if (null==booktypes){
+            booktypes = booktypeMapper.selectList(null);
+            System.out.println("从数据库查询数据");
+        }else {
+            System.out.println("直接从缓存(属性实现)中拿数据");
+        }
+
         return booktypes;
     }
 
