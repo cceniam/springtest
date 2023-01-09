@@ -17,4 +17,6 @@ public interface BookService extends IService<Book> {
     Page<Book> getPageBook(Integer currentPage, Integer pageSize);
 
 
+    Page<Book> getPageBooksByTypeId(Integer currentPage, Integer pageSize, Integer typeId);
+
 }

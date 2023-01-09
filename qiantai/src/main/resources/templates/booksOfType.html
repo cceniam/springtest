@@ -59,15 +59,37 @@
         el: "#app"
         ,
         data: {
-
+            typeId:[[${typeId}]],
+            books:[],
+            currentPage:1,
+            pageSize:3,
+            total:0,
+            totalPages:0
         }
         ,
         methods: {
-
+            initBooks(){
+                let _this=this;
+                let params={
+                    currentPage: this.currentPage,
+                    pageSize : this.pageSize,
+                    typeId: this.typeId
+                }
+                $.post("/book/pageBooksOfType",params,function (data) {
+                    console.log(data)
+                    _this.books=data.records;
+                    _this.currentPage=data.current;
+                    _this.pageSize=data.size;
+                    //数据总量
+                    _this.total=data.total;
+                    //总页数
+                    _this.totalPages=data.pages;
+                })
+            }
         }
         ,
         created(){
-
+            this.initBooks();
         }
 
     });
