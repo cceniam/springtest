@@ -48,6 +48,12 @@ public class BookController {
     }
 
 
+    @RequestMapping("booksOfType")
+    public String booksOfType(Long typeId, Model model){
+        model.addAttribute("typeId",typeId);
+        return "booksOfType";
+    }
+
 
 
 }

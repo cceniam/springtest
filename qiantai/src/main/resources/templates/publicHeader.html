@@ -12,7 +12,7 @@
                 <!--图书类型列表-->
                 <ol class="breadcrumb">
                     <li v-for="bookType in bookTypes">
-                        <a href="" v-text="bookType.name"></a>
+                        <a :href="'/book/booksOfType?typeId='+bookType.id" v-text="bookType.name"></a>
                     </li>
                 </ol>
             </div>
