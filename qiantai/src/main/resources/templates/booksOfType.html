@@ -39,9 +39,9 @@
         <div class="row">
             <div class="col-md-12 col-md-offset-5 col-lg-offset-4col-xl-offset-5" >
                 <ul class="pagination justify-content-center">
-                    <li><a href="javascript:void(0)" >&laquo;</a></li>
-                    <li><a href="javascript:void(0)" >n</a></li>
-                    <li><a href="javascript:void(0)" >&raquo;</a></li>
+                    <li><a href="javascript:void(0)" @click.prevent="go(currentPage-1)">&laquo;</a></li>
+                    <li><a href="javascript:void(0)" v-for="n in totalPages" v-text="n" @click.prevent="go(n)">n</a></li>
+                    <li><a href="javascript:void(0)" @click.prevent="go(currentPage+1)" >&raquo;</a></li>
                 </ul>
             </div>
         </div>
@@ -85,6 +85,17 @@
                     //总页数
                     _this.totalPages=data.pages;
                 })
+            }
+            ,
+            go(pageNum){
+                //小于1 或者 大于total 或者 仍获取当前页数据 直接返回
+                if(pageNum<1 || pageNum>this.totalPages || pageNum==this.currentPage){
+                    console.log(pageNum + " 无效页码值")
+                    return;
+                }
+
+                this.currentPage = pageNum;
+                this.initBooks();
             }
         }
         ,
