@@ -18,6 +18,7 @@
     <modules>
         <module>qiantai</module>
         <module>Demos/MyBatisPlusDemo</module>
+        <module>Demos/CacheDemo</module>
     </modules>
 
     <properties>
