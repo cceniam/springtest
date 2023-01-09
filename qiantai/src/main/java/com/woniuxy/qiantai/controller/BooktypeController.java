@@ -32,6 +32,11 @@ public class BooktypeController {
         return allBookType;
     }
 
+    @RequestMapping("getById")
+    public Booktype getById(Integer typeId){
+        Booktype booktype = booktypeService.getById(typeId);
+        return booktype;
+    }
 
 
 }

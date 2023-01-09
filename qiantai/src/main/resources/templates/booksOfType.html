@@ -17,7 +17,17 @@
 
 <div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
 
-    <div class="container">
+    <div class="container col-md-12" v-if="total<=0" >
+        <h3 style="text-align: center">暂无 {{typeName}} 相关书籍</h3>
+    </div>
+
+    <div class="container" v-if="total>0">
+
+        <div class="row">
+            <div class="col-md-12">
+                <p style="background-color: cornflowerblue ; color: white; font-size: 30px">{{typeName}}</p>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-sm-6 col-md-4" v-for="book in books">
@@ -64,7 +74,8 @@
             currentPage:1,
             pageSize:3,
             total:0,
-            totalPages:0
+            totalPages:0,
+            typeName:""
         }
         ,
         methods: {
@@ -97,10 +108,19 @@
                 this.currentPage = pageNum;
                 this.initBooks();
             }
+            ,
+            initTypeName(){
+                let _this= this;
+                let url = "/booktype/getById?typeId="+this.typeId;
+                $.get(url,function (data) {
+                    _this.typeName = data.name;
+                })
+            }
         }
         ,
         created(){
             this.initBooks();
+            this.initTypeName();
         }
 
     });
