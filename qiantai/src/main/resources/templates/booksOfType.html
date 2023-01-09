@@ -20,15 +20,15 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-sm-6 col-md-4">
+            <div class="col-sm-6 col-md-4" v-for="book in books">
                 <div class="thumbnail">
-                    <img src="" alt="..." class="col-sm-6 col-md-6">
+                    <img :src="book.imgsrc" alt="..." class="col-sm-6 col-md-6">
                     <div class="caption text-left">
-                        <p>书名:<span>name</span></p>
-                        <p>作者:<span>author</span></p>
-                        <p>价格:<span>price</span></p>
+                        <p>书名:<span v-text="book.name">name</span></p>
+                        <p>作者:<span v-text="book.author">author</span></p>
+                        <p>价格:<span v-text="book.price">price</span></p>
                         <p>
-                            <a class="btn btn-primary" href="">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-primary" :href="'/book/singleBook?bookId='+book.id">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
                             <a class="btn btn-success" href="">todo加入购物车</a>
                         </p>
                     </div>
