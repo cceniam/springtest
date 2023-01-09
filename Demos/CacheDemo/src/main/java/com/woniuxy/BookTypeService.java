@@ -1,6 +1,8 @@
 package com.woniuxy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,15 +13,9 @@ public class BookTypeService {
     @Autowired
     BooktypeMapper booktypeMapper;
 
-    List<Booktype> booktypes;
-
+    @Cacheable(value = "bookType",key = "#root.targetClass+#root.methodName")
     public List<Booktype> getAll(){
-        if (null==booktypes){
-            booktypes = booktypeMapper.selectList(null);
-            System.out.println("从数据库查询数据");
-        }else {
-            System.out.println("直接从缓存(属性实现)中拿数据");
-        }
+        List<Booktype> booktypes = booktypeMapper.selectList(null);
 
         return booktypes;
     }
@@ -29,6 +25,7 @@ public class BookTypeService {
         return booktype;
     }
 
+    @CacheEvict(value = "bookType",allEntries = true)
     public void add(Booktype booktype){
         int insert = booktypeMapper.insert(booktype);
         //增删改可能造成 数据库和缓存 数据不一致的问题
@@ -36,17 +33,19 @@ public class BookTypeService {
         //方案一: 同步修改缓存中的数据
 
         //方案二: 干掉缓存  采用
-        booktypes = null;
+//        booktypes = null;
     }
 
+    @CacheEvict(value = "bookType",allEntries = true)
     public void deleteById(Integer typeId){
         int i = booktypeMapper.deleteById(typeId);
-        booktypes = null;
+//        booktypes = null;
     }
 
+    @CacheEvict(value = "bookType",allEntries = true)
     public void updateById(Booktype booktype){
         int i = booktypeMapper.updateById(booktype);
-        booktypes = null;
+//        booktypes = null;
     }
 
 
