@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>booksOfType</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+
+<div th:insert="publicHeader"/>
+<script th:src="@{/publicHeader.js}"></script>
+
+
+
+<div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
+
+    <div class="container col-md-12" v-if="total<=0" >
+        <h3 style="text-align: center">暂无 {{typeName}} 相关书籍</h3>
+    </div>
+
+    <div class="container" v-if="total>0">
+
+        <div class="row">
+            <div class="col-md-12">
+                <p style="background-color: cornflowerblue ; color: white; font-size: 30px">{{typeName}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6 col-md-4" v-for="book in books">
+                <div class="thumbnail">
+                    <img :src="book.imgsrc" alt="..." class="col-sm-6 col-md-6">
+                    <div class="caption text-left">
+                        <p>书名:<span v-text="book.name">name</span></p>
+                        <p>作者:<span v-text="book.author">author</span></p>
+                        <p>价格:<span v-text="book.price">price</span></p>
+                        <p>
+                            <a class="btn btn-primary" :href="'/book/singleBook?bookId='+book.id">详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a class="btn btn-success" href="">todo加入购物车</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-md-offset-5 col-lg-offset-4col-xl-offset-5" >
+                <ul class="pagination justify-content-center">
+                    <li><a href="javascript:void(0)" @click.prevent="go(currentPage-1)">&laquo;</a></li>
+                    <li><a href="javascript:void(0)" v-for="n in totalPages" v-text="n" @click.prevent="go(n)">n</a></li>
+                    <li><a href="javascript:void(0)" @click.prevent="go(currentPage+1)" >&raquo;</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    console.log(".........booksOfType...........")
+
+    new Vue({
+        el: "#app"
+        ,
+        data: {
+            typeId:[[${typeId}]],
+            books:[],
+            currentPage:1,
+            pageSize:3,
+            total:0,
+            totalPages:0,
+            typeName:""
+        }
+        ,
+        methods: {
+            initBooks(){
+                let _this=this;
+                let params={
+                    currentPage: this.currentPage,
+                    pageSize : this.pageSize,
+                    typeId: this.typeId
+                }
+                $.post("/book/pageBooksOfType",params,function (data) {
+                    console.log(data)
+                    _this.books=data.records;
+                    _this.currentPage=data.current;
+                    _this.pageSize=data.size;
+                    //数据总量
+                    _this.total=data.total;
+                    //总页数
+                    _this.totalPages=data.pages;
+                })
+            }
+            ,
+            go(pageNum){
+                //小于1 或者 大于total 或者 仍获取当前页数据 直接返回
+                if(pageNum<1 || pageNum>this.totalPages || pageNum==this.currentPage){
+                    console.log(pageNum + " 无效页码值")
+                    return;
+                }
+
+                this.currentPage = pageNum;
+                this.initBooks();
+            }
+            ,
+            initTypeName(){
+                let _this= this;
+                let url = "/booktype/getById?typeId="+this.typeId;
+                $.get(url,function (data) {
+                    _this.typeName = data.name;
+                })
+            }
+        }
+        ,
+        created(){
+            this.initBooks();
+            this.initTypeName();
+        }
+
+    });
+
+
+</script>
+
+
+<div th:insert="publicFooter"/>
+<script th:src="@{/publicFooter.js}"></script>
+
+
+</body>
+</html>
