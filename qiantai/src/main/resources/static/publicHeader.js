@@ -14,9 +14,17 @@ let publicHeader = new Vue({
                 _this.bookTypes = data;
             })
         }
+        ,
+        initCurrentAccount(){
+            let _this=this;
+            $.get("/user/currentAccount",function (data) {
+                _this.currentAccount=data;
+            })
+        }
     },
     //vue生命周期中调用
     created() {
         this.initBookTypes();
+        this.initCurrentAccount();
     }
 });
