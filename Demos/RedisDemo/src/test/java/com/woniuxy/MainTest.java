@@ -1,11 +1,13 @@
 package com.woniuxy;
 
 import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.woniuxy.utils.JedisPoolUtil;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -61,6 +63,56 @@ public class MainTest {
         JedisPoolUtil.close(jedis);
 
     }
+
+    @Test
+    public void testJson(){
+
+        User user = new User();
+        user.setName("woniu");
+        user.setAge(18);
+
+        //GSON
+        Gson gson = new Gson();
+        String gson_json = gson.toJson(user);
+        System.out.println(gson_json);
+
+        User user_gson = gson.fromJson(gson_json, User.class);
+        System.out.println(user_gson);
+
+        //Fastjson
+        String fastjson_json = JSON.toJSONString(user);
+        System.out.println(fastjson_json);
+
+        Object parse = JSON.parse(fastjson_json);
+        System.out.println(parse);
+
+        User user_fastjson = JSON.parseObject(fastjson_json, User.class);
+        System.out.println(user_fastjson);
+
+
+        //测试list
+        User user2 = new User();
+        user2.setName("woniu2");
+        user2.setAge(19);
+
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        userList.add(user2);
+
+        //注意这里gson反序列化之后类型变掉了
+        String userList_json_gson = gson.toJson(userList);
+        System.out.println(userList_json_gson);
+        ArrayList userList_gson = gson.fromJson(userList_json_gson, new ArrayList<User>().getClass());
+
+        //fastjson反序列化符合预期
+        String userList_json_fast = JSON.toJSONString(userList);
+        System.out.println(userList_json_fast);
+        List<User> userList_fast = JSON.parseArray(userList_json_fast, User.class);
+
+        //还有一个工具叫jackson
+    }
+
+
 
 
 }
