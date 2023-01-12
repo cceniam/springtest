@@ -3,7 +3,8 @@ let publicHeader = new Vue({
     //element
     el: "#publicHeaderApp",
     data: {
-        bookTypes: []
+        bookTypes: [],
+        currentAccount:''
     },
     methods: {
         initBookTypes() {
