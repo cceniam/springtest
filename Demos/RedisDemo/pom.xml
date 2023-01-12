@@ -33,6 +33,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
         <!--连接Redis的客户端-->
         <dependency>
             <groupId>redis.clients</groupId>

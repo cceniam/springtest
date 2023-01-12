@@ -85,4 +85,28 @@ public class RedisDemoMainTest {
     }
 
 
-}
+    @Autowired
+    RedisTemplate<String,Object> stringObjectRedisTemplate;
+
+    @Test
+    void testTemplateStringObject(){
+
+        Person person = new Person();
+        person.setName("woNiuHZ");
+        person.setAge(18);
+
+        ValueOperations<String, Object> stringObjectValueOperations = stringObjectRedisTemplate.opsForValue();
+        stringObjectValueOperations.set("personStringObject",person);
+        Object personStringObject = stringObjectValueOperations.get("personStringObject");
+        System.out.println(personStringObject);
+
+        Person personRedis = (Person)personStringObject;
+        System.out.println(personRedis);
+
+    }
+
+
+
+
+
+    }
