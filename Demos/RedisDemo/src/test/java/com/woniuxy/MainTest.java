@@ -114,5 +114,29 @@ public class MainTest {
 
 
 
+    @Test
+    public void testSimpleCache(){
+        //获取连接
+        Jedis jedis = JedisPoolUtil.getJedis();
+        System.out.println(jedis.ping());
+
+        //先从redis中获取data,有则使用,没有则生成数据并放入缓存
+        List<String> data = jedis.lrange("data", 0, -1);
+        if (null != data && !data.isEmpty()){
+            System.out.println("data from redis");
+        }else{
+            //模拟从数据库中获取数据,并缓存到redis中
+            data = new ArrayList<>(2);
+            data.add("66");
+            data.add("88");
+            System.out.println("push data to cache");
+            jedis.lpush("data",data.toArray(new String[0]));
+        }
+
+        System.out.println(new Gson().toJson(data));
+
+        JedisPoolUtil.close(jedis);
+    }
+
 
 }
