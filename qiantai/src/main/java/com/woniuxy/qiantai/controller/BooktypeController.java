@@ -4,6 +4,7 @@ package com.woniuxy.qiantai.controller;
 import com.woniuxy.qiantai.entity.Booktype;
 import com.woniuxy.qiantai.service.BooktypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ public class BooktypeController {
     BooktypeService booktypeService;
 
     @RequestMapping("all")
+    @Cacheable(value = "bookType",key = "#root.targetClass+#root.methodName")
     public List<Booktype> all(){
         List<Booktype> allBookType = booktypeService.list();
 

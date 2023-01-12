@@ -1,4 +1,4 @@
-package com.woniuxy;
+package com.woniuxy.qiantai.config;
 
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
