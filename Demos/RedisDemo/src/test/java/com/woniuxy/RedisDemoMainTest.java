@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.util.concurrent.TimeUnit;
+
 @SpringBootTest
 public class RedisDemoMainTest {
 
@@ -99,6 +101,9 @@ public class RedisDemoMainTest {
         stringObjectValueOperations.set("personStringObject",person);
         Object personStringObject = stringObjectValueOperations.get("personStringObject");
         System.out.println(personStringObject);
+
+        //后两个参数指定当前keyValue对有效时间
+        stringObjectValueOperations.set("personStringObject2",person,10, TimeUnit.SECONDS);
 
         Person personRedis = (Person)personStringObject;
         System.out.println(personRedis);
