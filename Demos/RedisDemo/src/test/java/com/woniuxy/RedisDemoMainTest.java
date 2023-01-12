@@ -106,6 +106,15 @@ public class RedisDemoMainTest {
     }
 
 
+    @Autowired
+    Queryer queryer;
+
+    @Test
+    void testBootCache(){
+        queryer.queryAll();
+        queryer.queryAll();
+        queryer.queryAll();
+    }
 
 
 

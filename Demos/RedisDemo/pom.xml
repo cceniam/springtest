@@ -68,6 +68,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!--BootCache 类比JDBC-->
+        <!--默认是利用本机内存实现缓存, 如果同时引入了 spring-boot-starter-data-redis依赖,自动切换到使用Redis实现缓存-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
