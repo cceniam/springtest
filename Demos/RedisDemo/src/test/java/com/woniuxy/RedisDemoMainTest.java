@@ -132,6 +132,18 @@ public class RedisDemoMainTest {
     }
 
 
+    @Test
+    void testBootCacheKey3(){
+        queryer.queryAllPage3(4,5,"name3");
+        queryer.queryAllPage3(4,5,"name3");
+    }
+
+    @Test
+    void testBootCacheDel(){
+        queryer.delQueryCache();
+    }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.woniuxy;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +44,26 @@ public class Queryer {
         objects.add("name");
         objects.add(new Date());
         return objects;
+    }
+
+
+    //p 就是 params
+    @Cacheable(value = "queryer",keyGenerator = "keyGenerator")
+    // 1 5 name1  key
+    // 1 5 name1  key
+    // 2 5 name1  key2
+    public List queryAllPage3(int now, int size , String name){
+
+        System.out.println("执行查询所有数据 queryAllPage3");
+        ArrayList<Object> objects = new ArrayList<>(2);
+        objects.add("name");
+        objects.add(new Date());
+        return objects;
+    }
+
+    @CacheEvict(value = "queryer", allEntries = true)
+    public void delQueryCache(){
+        System.out.println("delQueryCache");
     }
 
 
