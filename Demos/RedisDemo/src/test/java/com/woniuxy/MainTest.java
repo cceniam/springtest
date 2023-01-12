@@ -1,10 +1,13 @@
 package com.woniuxy;
 
 import com.alibaba.fastjson.JSON;
+import com.woniuxy.utils.JedisPoolUtil;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.util.List;
+import java.util.Properties;
 
 public class MainTest {
 
@@ -43,6 +46,19 @@ public class MainTest {
         namesList.forEach(System.out::println);
 
 
+
+    }
+
+
+    @Test
+    public void testJedisPool(){
+        //Properties
+        Jedis jedis = JedisPoolUtil.getJedis();
+
+        System.out.println(jedis.ping("nihaoya"));
+        //.....
+
+        JedisPoolUtil.close(jedis);
 
     }
 
