@@ -1,5 +1,6 @@
 package com.woniuxy;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +54,32 @@ public class RedisDemoMainTest {
         stringStringValueOperations.set(key,value);
         String operationsStringValue = stringStringValueOperations.get(key);
         System.out.println(operationsStringValue);
+
+
+    }
+
+    @Test
+    void testTemplatePerson(){
+        Person person = new Person();
+        person.setName("woNiuHZ");
+        person.setAge(18);
+
+
+        //RedisTemplate<Object,Object>
+        ValueOperations<Object, Object> objectObjectValueOperations = objectObjectRedisTemplate.opsForValue();
+        objectObjectValueOperations.set("person",person);
+        Object operationsValue = objectObjectValueOperations.get("person");
+        System.out.println(operationsValue);
+
+        //StringRedisTemplate
+        ValueOperations<String, String> stringStringValueOperations = stringRedisTemplate.opsForValue();
+        stringStringValueOperations.set("person", JSON.toJSONString(person));
+
+        String operationsStringValue = stringStringValueOperations.get("person");
+        System.out.println(operationsStringValue);
+
+        Person personRedis = JSON.parseObject(operationsStringValue, Person.class);
+        System.out.println(personRedis);
 
 
     }
