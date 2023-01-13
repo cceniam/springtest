@@ -15,8 +15,11 @@ public class RabbitMqMainTest {
 
     @Test
     void testSendSimple(){
-        String msg = "simpleMsg "+new Date();
-        rabbitTemplate.convertAndSend("simpleQueue",msg);
+        for (int i = 0; i < 10; i++) {
+            String msg = "simpleMsg "+new Date();
+            rabbitTemplate.convertAndSend("simpleQueue",msg);
+        }
+
     }
 
     @Test
