@@ -4,7 +4,7 @@ import com.rabbitmq.client.*;
 
 import java.io.IOException;
 
-public class SimpleConsumer {
+public class SimpleConsumer2 {
 
     public static void main(String[] args) throws Exception{
 
@@ -41,21 +41,12 @@ public class SimpleConsumer {
                 System.out.println(properties);
 
                 String msg = new String(body);
-                System.out.println("我是 SimpleConsumer 接收到msg: "+msg);
+                System.out.println("我是 SimpleConsumer22222 接收到msg: "+msg);
 
                 System.out.println("执行具体业务.......");
 
-                try{
-                    int a = 3/0;
-                }catch (Exception e){
-                    e.printStackTrace();
-                    //log......
-                    channel.basicNack(envelope.getDeliveryTag(), false,true);
-                    throw e;
-                }
-
                 //channel.basicAck(envelope.getDeliveryTag(), true); //multiple为true时,批量确认比当前deliveryTag小的所有消息
-                //channel.basicAck(envelope.getDeliveryTag(), false); //multiple为false时,只确认当前消息
+                channel.basicAck(envelope.getDeliveryTag(), false); //multiple为false时,只确认当前消息
 
             }
         });
