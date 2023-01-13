@@ -86,6 +86,18 @@ public class RabbitMqMainTest {
     }
 
 
+    @Test
+    void testTopicSend(){
+
+
+        //将消息携带绑定键值：TestDirectRouting 发送到交换机TestDirectExchange
+        rabbitTemplate.convertAndSend("topicExchange", "topic.man", "msg topic.man");
+        rabbitTemplate.convertAndSend("topicExchange", "topic.woman", "msg topic.woman");
+
+
+    }
+
+
 
 
 
