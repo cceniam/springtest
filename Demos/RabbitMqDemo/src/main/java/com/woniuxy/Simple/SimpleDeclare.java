@@ -3,6 +3,7 @@ package com.woniuxy.Simple;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.woniuxy.ConnectionUtils;
 
 /**
  * 去RabbitMQ创建交换机或者队列
@@ -10,15 +11,7 @@ import com.rabbitmq.client.ConnectionFactory;
 public class SimpleDeclare {
 
     public static void main(String[] args) throws Exception {
-        //初始化连接工厂
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("127.0.0.1");
-        connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-
-        //建立一个与RabbitMQ之间的连接
-        Connection connection = connectionFactory.newConnection();
+        Connection connection = ConnectionUtils.getConnection();
 
         //获取channel (具体业务对接人)
         Channel channel = connection.createChannel();

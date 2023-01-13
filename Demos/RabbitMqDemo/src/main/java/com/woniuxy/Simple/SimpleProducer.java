@@ -3,6 +3,7 @@ package com.woniuxy.Simple;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.woniuxy.ConnectionUtils;
 
 import java.util.Date;
 
@@ -13,17 +14,7 @@ public class SimpleProducer {
         String msg = "我是一条来自 SimpleProducer 的消息, "+ new Date();
 
 
-        //建立连接
-
-        //初始化连接工厂
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("127.0.0.1");
-        connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-
-        //建立一个与RabbitMQ之间的连接
-        Connection connection = connectionFactory.newConnection();
+        Connection connection = ConnectionUtils.getConnection();
 
 
         //对接channel

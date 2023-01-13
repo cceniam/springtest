@@ -1,6 +1,7 @@
 package com.woniuxy.Simple;
 
 import com.rabbitmq.client.*;
+import com.woniuxy.ConnectionUtils;
 
 import java.io.IOException;
 
@@ -11,15 +12,7 @@ public class SimpleConsumer2 {
 
         //建立连接
 
-        //初始化连接工厂
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost("127.0.0.1");
-        connectionFactory.setPort(5672);
-        connectionFactory.setUsername("guest");
-        connectionFactory.setPassword("guest");
-
-        //建立一个与RabbitMQ之间的连接
-        Connection connection = connectionFactory.newConnection();
+        Connection connection = ConnectionUtils.getConnection();
 
 
         //对接channel
