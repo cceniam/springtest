@@ -2,6 +2,7 @@ package com.woniuxy.Simple;
 
 import com.rabbitmq.client.*;
 import com.woniuxy.ConnectionUtils;
+import com.woniuxy.MqConst;
 
 import java.io.IOException;
 
@@ -20,7 +21,7 @@ public class SimpleConsumer {
         //监听消息
 //        channel.basicConsume("simple_queue",new DefaultConsumer(channel){   //没有使用ack
 //        channel.basicConsume("simple_queue",true,new DefaultConsumer(channel){  //自动ack
-        channel.basicConsume("simple_queue",false,new DefaultConsumer(channel){  //手动动ack
+        channel.basicConsume(MqConst.SIMPLE_QUEUE,false,new DefaultConsumer(channel){  //手动动ack
 
             //具体的处理消息方法
             @Override

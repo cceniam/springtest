@@ -4,6 +4,7 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.woniuxy.ConnectionUtils;
+import com.woniuxy.MqConst;
 
 import java.util.Date;
 
@@ -23,7 +24,7 @@ public class SimpleProducer {
 
         //发送消息
         //exchange如果不是用,需要传一个空字符串,不能传null
-        channel.basicPublish("","simple_queue",null,msg.getBytes());
+        channel.basicPublish("", MqConst.SIMPLE_QUEUE,null,msg.getBytes());
         System.out.println("send msg: "+msg);
 
         //关闭连接
