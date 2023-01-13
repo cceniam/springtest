@@ -5,6 +5,7 @@ import com.woniuxy.ConnectionUtils;
 import com.woniuxy.MqConst;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class SimpleConsumer {
 
@@ -35,20 +36,28 @@ public class SimpleConsumer {
                 String msg = new String(body);
                 System.out.println("我是 SimpleConsumer 接收到msg: "+msg);
 
-                System.out.println("执行具体业务.......");
+                //新线程里执行具体业务
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-                try{
-                    int a = 3/0;
-                }catch (Exception e){
-                    e.printStackTrace();
-                    //log......
-                    channel.basicNack(envelope.getDeliveryTag(), false,true);
-                    throw e;
-                }
+                        try {
+                            System.out.println("执行具体业务.......");
+                            TimeUnit.SECONDS.sleep(5);
+                            int a = 3 / 0;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out.println("实际业务执行失败");
+                            throw new RuntimeException(e);
+                        }
+                    }
 
+                },"subThread").start();
+
+
+                System.out.println("handleDelivery 执行完成");
                 //channel.basicAck(envelope.getDeliveryTag(), true); //multiple为true时,批量确认比当前deliveryTag小的所有消息
-                //channel.basicAck(envelope.getDeliveryTag(), false); //multiple为false时,只确认当前消息
-
+                channel.basicAck(envelope.getDeliveryTag(), false); //multiple为false时,只确认当前消息
             }
         });
 
