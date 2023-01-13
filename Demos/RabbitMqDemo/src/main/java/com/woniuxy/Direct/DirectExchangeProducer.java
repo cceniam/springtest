@@ -2,6 +2,7 @@ package com.woniuxy.Direct;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.MessageProperties;
 import com.woniuxy.ConnectionUtils;
 import com.woniuxy.MqConst;
 
@@ -25,7 +26,8 @@ public class DirectExchangeProducer {
         //发送消息
 
         //发送Query消息
-        channel.basicPublish(MqConst.DirectExchange,MqConst.Query,null,msgQuery.getBytes());
+        //第三个参数指定为MessageProperties.PERSISTENT_TEXT_PLAIN 可以做到消息持久化
+        channel.basicPublish(MqConst.DirectExchange,MqConst.Query, MessageProperties.PERSISTENT_TEXT_PLAIN,msgQuery.getBytes());
         System.out.println("send msg: "+msgQuery);
 
         //发送AddDelUpdate消息
