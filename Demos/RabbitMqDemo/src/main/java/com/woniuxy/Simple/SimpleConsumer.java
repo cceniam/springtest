@@ -27,7 +27,8 @@ public class SimpleConsumer {
 
 
         //监听消息
-        channel.basicConsume("simple_queue",new DefaultConsumer(channel){
+//        channel.basicConsume("simple_queue",new DefaultConsumer(channel){   //没有使用ack
+        channel.basicConsume("simple_queue",true,new DefaultConsumer(channel){  //自动ack
 
             //具体的处理消息方法
             @Override
