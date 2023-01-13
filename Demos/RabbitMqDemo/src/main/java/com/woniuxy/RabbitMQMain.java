@@ -1,10 +1,16 @@
 package com.woniuxy;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.util.concurrent.TimeUnit;
 
-public class Main {
+@SpringBootApplication
+public class RabbitMQMain {
     public static void main(String[] args) {
         System.out.println("Hello world!");
+
+        SpringApplication.run(RabbitMQMain.class);
 
         System.out.println(Thread.currentThread().getName());
 
