@@ -16,7 +16,6 @@ public class TopicExchangeProducer {
         //对接channel
         Channel channel = connection.createChannel();
 
-        //fixme  处理bug
         sendMsg(channel,"quick.orange.rabbit");
         sendMsg(channel,"lazy.orange.elephant");
         sendMsg(channel,"quick.orange.fox");

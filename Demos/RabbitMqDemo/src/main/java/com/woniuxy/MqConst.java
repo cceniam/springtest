@@ -22,7 +22,8 @@ public class MqConst {
     public static String TopicQueue1Key="*.orange.*";
     public static String TopicQueue2Key1="*.*.rabbit";
     //# 匹配一个或者多个词
-    public static String TopicQueue2Key2="lazy.＃";
+    //public static String TopicQueue2Key2="lazy.＃";  //当时这里的#号写成了中文的#号
+    public static String TopicQueue2Key2="lazy.#";
 
 
 }
