@@ -14,5 +14,15 @@ public class MqConst {
     public static String AddDelUpdateQueue="AddDelUpdateQueue";
     public static String AddDelUpdate="AddDelUpdate";
 
+    public static String TopicExchange="TopicExchange";
+    public static String TopicQueue1="TopicQueue1";
+    public static String TopicQueue2="TopicQueue2";
+
+    //* 匹配一个词
+    public static String TopicQueue1Key="*.orange.*";
+    public static String TopicQueue2Key1="*.*.rabbit";
+    //# 匹配一个或者多个词
+    public static String TopicQueue2Key2="lazy.＃";
+
 
 }
