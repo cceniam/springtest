@@ -21,6 +21,7 @@
         <module>Demos/CacheDemo</module>
         <module>Demos/RedisDemo</module>
         <module>Demos/RabbitMqDemo</module>
+        <module>Demos/RabbitMqDemo2</module>
     </modules>
 
     <properties>
