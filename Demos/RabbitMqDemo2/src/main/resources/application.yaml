@@ -6,3 +6,7 @@ spring:
     password: guest
     publisher-confirm-type: correlated
     publisher-returns: true
+    #开启手动ack
+    listener:
+      simple:
+        acknowledge-mode: manual
