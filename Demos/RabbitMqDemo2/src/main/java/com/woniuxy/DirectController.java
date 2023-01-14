@@ -38,6 +38,26 @@ public class DirectController {
     }
 
 
+    @RequestMapping("/deadsend")
+    @ResponseBody
+    public String deadsend(String exchange, String routingKey, String deadMsg){
+
+        //准备发送的数据
+        String messageId = String.valueOf(UUID.randomUUID());
+        String messageData = "test message, hello!";
+        String createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("messageId", messageId);
+        map.put("messageData", messageData);
+        map.put("createTime", createTime);
+        map.put("deadMsg",deadMsg);
+
+        rabbitTemplate.convertAndSend(exchange,routingKey,map);
+
+        return "ok";
+    }
+
+
     @RequestMapping("/")
     @ResponseBody
     public String root(){
