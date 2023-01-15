@@ -32,6 +32,10 @@ public class AboutAckConsumer {
                  */
                 //channel.basicReject(envelope.getDeliveryTag(),true);
 
+
+                //复制出来两个Consumer: AboutAckConsumer2 AboutAckConsumer3
+                //结合Debug可以看到RabbitMQ尝试调用不同的Consumer 直到实现消息的正常Ack为止
+
             }
 
         });
