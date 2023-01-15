@@ -31,13 +31,13 @@ public class DirectListener1 {
 
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
         }catch (Exception e){
-            //todo 有需要完成的任务
-            //fixme 没有拒绝消息的效果
+            //fixed 没有拒绝消息的效果
+            //参考 ack补充专题
             e.printStackTrace();
             //log.....
             //自动ack的时候,监听方法里不要抛出异常,否则会无限重试,导致死循环
-            //channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,true);
-            channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,false);
+//            channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);
         }
 
 
