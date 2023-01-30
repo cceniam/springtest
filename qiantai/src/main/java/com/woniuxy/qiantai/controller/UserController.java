@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -123,6 +122,10 @@ public class UserController {
         return "redirect:/";
     }
 
+    @RequestMapping("redirectLoginHtml")
+    public String redirectLoginHtml(){
+        return "redirect:/login.html";
+    }
 
 }
 
