@@ -42,6 +42,7 @@ public class UserController {
     public void getKaptchaImage(HttpServletResponse response,HttpSession httpSession) throws IOException {
         //生成验证码
         String codeText = producer.createText();
+        codeText="0000"; //手动指定验证码,方便调试
         httpSession.setAttribute("kaptchaCode",codeText);
 
         BufferedImage codeImage = producer.createImage(codeText);
