@@ -2,6 +2,7 @@ package com.woniuxy.qiantai;
 
 import com.woniuxy.qiantai.entity.User;
 import com.woniuxy.qiantai.service.UserService;
+import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +16,7 @@ import java.util.List;
 @SpringBootApplication
 //@Controller
 @EnableCaching
+@EnableRabbit
 public class QianTaiMain {
     public static void main(String[] args) {
         SpringApplication.run(QianTaiMain.class);

@@ -6,6 +6,7 @@ import com.woniuxy.qiantai.entity.User;
 import com.woniuxy.qiantai.service.UserService;
 import com.woniuxy.qiantai.utils.CookieUtils;
 import com.woniuxy.qiantai.utils.JwtUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
@@ -51,6 +52,9 @@ public class UserController {
 
     @Autowired
     JavaMailSender javaMailSender;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     @RequestMapping("getKaptchaImage")
     public void getKaptchaImage(HttpServletResponse response,HttpSession httpSession) throws IOException {
@@ -145,17 +149,19 @@ public class UserController {
         if (!isOK){
             return "请输入正确邮箱";
         }
+//
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom("woniumrwang@qq.com");
+//        message.setTo(email);  //用自己的邮箱做测试
+//        message.setSubject("蜗牛书店注册验证码");
+//        String code = producer.createText();
+//        message.setText("您的注册验证码,请尽快使用 "+code);
+//
+//        javaMailSender.send(message);
+//
+//        stringRedisTemplate.opsForValue().set(email,code,5,TimeUnit.MINUTES);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("woniumrwang@qq.com");
-        message.setTo(email);  //用自己的邮箱做测试
-        message.setSubject("蜗牛书店注册验证码");
-        String code = producer.createText();
-        message.setText("您的注册验证码,请尽快使用 "+code);
-
-        javaMailSender.send(message);
-
-        stringRedisTemplate.opsForValue().set(email,code,5,TimeUnit.MINUTES);
+        rabbitTemplate.convertAndSend("sendEmailExchange","sendEmail",email);
 
         return "ok";
     }
