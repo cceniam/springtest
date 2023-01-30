@@ -56,5 +56,22 @@ public class QianTaiMainTest {
 
     }
 
+    @Test
+    void testJwtUtils(){
+
+        String token = JwtUtils.createToken("dasheng", 15);
+        token="lajsdlf";
+        System.out.println(token);
+
+        System.out.println(JwtUtils.getAccountWithoutException(token));
+
+        System.out.println(JwtUtils.parseClaims(token));
+        System.out.println(JwtUtils.getAccount(token));
+
+
+
+    }
+
+
 
 }
