@@ -4,6 +4,8 @@ package com.woniuxy.qiantai.controller;
 import com.google.code.kaptcha.Producer;
 import com.woniuxy.qiantai.entity.User;
 import com.woniuxy.qiantai.service.UserService;
+import com.woniuxy.qiantai.utils.CookieUtils;
+import com.woniuxy.qiantai.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
@@ -55,7 +58,7 @@ public class UserController {
 
     @PostMapping("login")
     public String login(String username, String password, String code,
-                        HttpSession httpSession, Model model){
+                        HttpSession httpSession, Model model,HttpServletResponse response){
 
         //校验验证码
         String kaptchaCode = (String)httpSession.getAttribute("kaptchaCode");
@@ -76,17 +79,21 @@ public class UserController {
         }
 
         //登录成功
-        httpSession.setAttribute("currentAccount",userByAccount.getAccount());
+        //httpSession.setAttribute("currentAccount",userByAccount.getAccount());
+        String token = JwtUtils.createToken(userByAccount.getAccount(), 15);
+        CookieUtils.setUserToken2Cookie(response,token);
 
         return "redirect:/";
     }
 
     @RequestMapping("currentAccount")
     @ResponseBody
-    public String currentAccount(HttpSession httpSession){
+    public String currentAccount(HttpSession httpSession, HttpServletRequest request){
         String account="";
 
-        String currentAccount = (String)httpSession.getAttribute("currentAccount");
+//        String currentAccount = (String)httpSession.getAttribute("currentAccount");
+        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
+        String currentAccount = JwtUtils.getAccountWithoutException(userTokenFromCookie);
         account = StringUtils.isEmpty(currentAccount) ? account : currentAccount;
 
         return account;
@@ -94,8 +101,9 @@ public class UserController {
 
 
     @RequestMapping("logout")
-    public String logout(HttpSession httpSession){
-        httpSession.removeAttribute("currentAccount");
+    public String logout(HttpSession httpSession,HttpServletResponse response){
+        //httpSession.removeAttribute("currentAccount");
+        CookieUtils.deleteUserTokenFromCookie(response);
         return "redirect:/";
     }
 
