@@ -160,6 +160,38 @@ public class UserController {
         return "ok";
     }
 
+    @RequestMapping("reg")
+    public String reg(String username,String password,String repass,String email,String emailCode,Model model){
+
+        //校验邮箱验证码
+        String emailCodeRedis = stringRedisTemplate.opsForValue().get(email);
+        if (StringUtils.isEmpty(emailCodeRedis) || !emailCodeRedis.equals(emailCode)){
+            model.addAttribute("errorInfo","邮箱验证码错误");
+            return "register";
+        }
+
+        //校验用户名, 用户名要唯一
+        if (StringUtils.isEmpty(username) || userService.getUserByAccount(username)!=null){
+            model.addAttribute("errorInfo","用户名已被占用,请重试");
+            return "register";
+        }
+
+        //校验邮箱,邮箱要唯一
+        if(StringUtils.isEmpty(email) || userService.getUserByEmail(email)!=null){
+            model.addAttribute("errorInfo","邮箱已被占用,请重试");
+            return "register";
+        }
+
+        if(StringUtils.isEmpty(password) || StringUtils.isEmpty(repass) || !password.equals(repass)){
+            model.addAttribute("errorInfo","请正确输入两次密码");
+            return "register";
+        }
+
+        userService.reg(username,password,email);
+
+        return "login";
+    }
+
 
 }
 
