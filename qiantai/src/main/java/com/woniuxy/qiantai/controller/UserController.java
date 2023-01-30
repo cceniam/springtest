@@ -8,6 +8,8 @@ import com.woniuxy.qiantai.utils.CookieUtils;
 import com.woniuxy.qiantai.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,7 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * <p>
@@ -45,6 +49,8 @@ public class UserController {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    JavaMailSender javaMailSender;
 
     @RequestMapping("getKaptchaImage")
     public void getKaptchaImage(HttpServletResponse response,HttpSession httpSession) throws IOException {
@@ -126,6 +132,34 @@ public class UserController {
     public String redirectLoginHtml(){
         return "redirect:/login.html";
     }
+
+
+    @RequestMapping("getEmailCode")
+    @ResponseBody
+    public String getEmailCode(String email){
+
+        //正则表达式校验邮箱
+        String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        boolean isOK = pattern.matcher(email).matches();
+        if (!isOK){
+            return "请输入正确邮箱";
+        }
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("woniumrwang@qq.com");
+        message.setTo(email);  //用自己的邮箱做测试
+        message.setSubject("蜗牛书店注册验证码");
+        String code = producer.createText();
+        message.setText("您的注册验证码,请尽快使用 "+code);
+
+        javaMailSender.send(message);
+
+        stringRedisTemplate.opsForValue().set(email,code,5,TimeUnit.MINUTES);
+
+        return "ok";
+    }
+
 
 }
 
