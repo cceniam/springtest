@@ -170,24 +170,27 @@ public class UserController {
             return "register";
         }
 
-        //校验用户名, 用户名要唯一
-        if (StringUtils.isEmpty(username) || userService.getUserByAccount(username)!=null){
-            model.addAttribute("errorInfo","用户名已被占用,请重试");
-            return "register";
-        }
+        //username.intern() 强制去字符串常量池里获取对象
+        synchronized (username.intern()) {
+            //校验用户名, 用户名要唯一
+            if (StringUtils.isEmpty(username) || userService.getUserByAccount(username) != null) {
+                model.addAttribute("errorInfo", "用户名已被占用,请重试");
+                return "register";
+            }
 
-        //校验邮箱,邮箱要唯一
-        if(StringUtils.isEmpty(email) || userService.getUserByEmail(email)!=null){
-            model.addAttribute("errorInfo","邮箱已被占用,请重试");
-            return "register";
-        }
+            //校验邮箱,邮箱要唯一
+            if (StringUtils.isEmpty(email) || userService.getUserByEmail(email) != null) {
+                model.addAttribute("errorInfo", "邮箱已被占用,请重试");
+                return "register";
+            }
 
-        if(StringUtils.isEmpty(password) || StringUtils.isEmpty(repass) || !password.equals(repass)){
-            model.addAttribute("errorInfo","请正确输入两次密码");
-            return "register";
-        }
+            if (StringUtils.isEmpty(password) || StringUtils.isEmpty(repass) || !password.equals(repass)) {
+                model.addAttribute("errorInfo", "请正确输入两次密码");
+                return "register";
+            }
 
-        userService.reg(username,password,email);
+            userService.reg(username, password, email);
+        }
 
         return "login";
     }
