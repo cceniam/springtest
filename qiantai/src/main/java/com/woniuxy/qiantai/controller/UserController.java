@@ -7,6 +7,7 @@ import com.woniuxy.qiantai.service.UserService;
 import com.woniuxy.qiantai.utils.CookieUtils;
 import com.woniuxy.qiantai.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -40,6 +42,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
 
     @RequestMapping("getKaptchaImage")
     public void getKaptchaImage(HttpServletResponse response,HttpSession httpSession) throws IOException {
@@ -83,6 +89,9 @@ public class UserController {
         String token = JwtUtils.createToken(userByAccount.getAccount(), 15);
         CookieUtils.setUserToken2Cookie(response,token);
 
+        //在redis里也保存一份信息,有效期30分钟
+        stringRedisTemplate.opsForValue().set(token,userByAccount.getAccount(),30, TimeUnit.MINUTES);
+
         return "redirect:/";
     }
 
@@ -101,9 +110,16 @@ public class UserController {
 
 
     @RequestMapping("logout")
-    public String logout(HttpSession httpSession,HttpServletResponse response){
+    public String logout(HttpSession httpSession,HttpServletResponse response,HttpServletRequest request){
         //httpSession.removeAttribute("currentAccount");
         CookieUtils.deleteUserTokenFromCookie(response);
+
+        //同时删除redis中的信息
+        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
+        if (!StringUtils.isEmpty(userTokenFromCookie)){
+            stringRedisTemplate.delete(userTokenFromCookie);
+        }
+
         return "redirect:/";
     }
 
