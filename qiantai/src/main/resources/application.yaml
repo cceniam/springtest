@@ -24,6 +24,18 @@ spring:
         max-idle: 10
         min-idle: 3
         max-wait: 3000
+  mail:
+    host: smtp.qq.com
+    username: woniumrwang@qq.com  #邮箱名,一定要用你自己的
+    password: tvnomlspxwwpibfi # 邮箱授权码,一定要用你自己的
+    default-encoding: utf-8
+    port: 465
+    properties:
+      mail:
+        debug: true
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
 
 
 mybatis-plus:

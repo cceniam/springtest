@@ -2,7 +2,10 @@ package com.woniuxy.qiantai;
 
 import io.jsonwebtoken.*;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.Date;
 
@@ -70,6 +73,20 @@ public class QianTaiMainTest {
 
 
 
+    }
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Test
+    void testSendEmail(){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("woniumrwang@qq.com");
+        message.setTo("wangnimvp@163.com");  //用自己的邮箱做测试
+        message.setSubject("一封来自蜗牛书店的邮件");
+        message.setText("我是邮件的具体内容"+new Date());
+
+        javaMailSender.send(message);
     }
 
 
