@@ -1,7 +1,6 @@
 package com.woniuxy.qiantai.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.woniuxy.qiantai.entity.Address;
+import java.util.Collection;
 
 /**
  * <p>
@@ -15,4 +14,5 @@ public interface MyCartService {
 
     void addCart(Long userId, Long bookId);
 
+    Collection<Object> getAllItem(Long userId);
 }

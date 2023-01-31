@@ -1,20 +1,17 @@
 package com.woniuxy.qiantai.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.woniuxy.qiantai.entity.Address;
 import com.woniuxy.qiantai.entity.Book;
-import com.woniuxy.qiantai.mapper.AddressMapper;
 import com.woniuxy.qiantai.mapper.BookMapper;
-import com.woniuxy.qiantai.service.AddressService;
 import com.woniuxy.qiantai.service.MyCartService;
 import com.woniuxy.qiantai.vo.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * <p>
@@ -78,6 +75,15 @@ public class MyCartServiceImpl implements MyCartService {
 
     }
 
+    @Override
+    public Collection<Object> getAllItem(Long userId) {
+
+        HashOperations<String, Object, Object> hashOperations = stringObjectRedisTemplate.opsForHash();
+        Map<Object, Object> entries = hashOperations.entries(userId + "");
+        Collection<Object> allItems = entries.values();
+
+        return allItems;
+    }
 
 
 }

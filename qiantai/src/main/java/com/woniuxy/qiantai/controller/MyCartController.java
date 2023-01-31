@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 @Controller
 @RequestMapping("mycart")
@@ -36,9 +37,7 @@ public class MyCartController {
     public String add(Long bookId, HttpServletRequest request){
 
         //获取当前用户信息
-        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
-        String currentUserAccount = JwtUtils.getAccountWithoutException(userTokenFromCookie);
-        User currentUser = userService.getUserByAccount(currentUserAccount);
+        User currentUser = getCurrentUser(request);
 
         //将书籍加入到该用户的购物车
         myCartService.addCart(currentUser.getId(),bookId);
@@ -50,6 +49,25 @@ public class MyCartController {
 
 
     //获取购物车信息
+    @RequestMapping("allItem")
+    @ResponseBody
+    public Collection<Object> allItem(HttpServletRequest request){
+
+        User currentUser = getCurrentUser(request);
+
+        Collection<Object> allItem = myCartService.getAllItem(currentUser.getId());
+
+        return allItem;
+    }
+
+
+    private User getCurrentUser(HttpServletRequest request){
+        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
+        String currentUserAccount = JwtUtils.getAccountWithoutException(userTokenFromCookie);
+        User currentUser = userService.getUserByAccount(currentUserAccount);
+
+        return currentUser;
+    }
 
 
 }
