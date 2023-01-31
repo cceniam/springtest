@@ -36,7 +36,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <a class="btn btn-success" href="javascript:void(0)">todo加入购物车</a>
+            <a class="btn btn-success"  @click.prevent="addToCart(bookId)">加入购物车</a>
         </div>
     </div>
 
@@ -52,10 +52,21 @@
         el: "#app"
         ,
         data: {
+            bookId:[[${book.id}]]
 
         }
         ,
         methods: {
+
+            addToCart(bookId){
+                console.log(bookId)
+                //todo 访问后端接口,把图书加入购物车
+                $.get("/mycart/add?bookId="+bookId,function (data) {
+                    if(data == "ok"){
+                        alert("加购成功")
+                    }
+                })
+            }
 
         }
         ,
