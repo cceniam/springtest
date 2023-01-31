@@ -60,7 +60,20 @@
 
             addToCart(bookId){
                 console.log(bookId)
-                //todo 访问后端接口,把图书加入购物车
+
+
+                //判断当前是否是登录状态,如果未登录,跳转到登录页
+                console.log(publicHeader)
+                console.log(publicHeader._data.currentAccount)
+
+                if(!publicHeader._data.currentAccount){
+                    alert("请先登录");
+                    location.href="/login.html";
+                    return;
+                }
+
+
+                //访问后端接口,把图书加入购物车
                 $.get("/mycart/add?bookId="+bookId,function (data) {
                     if(data == "ok"){
                         alert("加购成功")
