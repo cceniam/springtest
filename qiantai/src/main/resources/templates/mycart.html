@@ -17,7 +17,57 @@
 
 <div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
 
-    mycart
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="cartCheck" />
+                        </th>
+                        <th>图书名称</th>
+                        <th>图书图片</th>
+                        <th>图书单价(元)</th>
+                        <th>购买数量</th>
+                        <th>小计</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr >
+                        <td>
+                            <input type="checkbox" name="cartItemCheck" />
+                        </td>
+                        <td style="height:60px;line-height: 60px">图书名称</td>
+                        <td>
+                            <img src="" style="width: 60px;height: 60px; border-radius: 50%"/>
+                        </td>
+                        <td style="height:60px;line-height: 60px">图书单价</td>
+                        <td style="height:60px;line-height: 60px">
+                            <a class="btn btn-default btn-sm" >一</a>
+                            &nbsp;<span>5</span>&nbsp;
+                            <a class="btn btn-default btn-sm" >十</a>
+                        </td>
+                        <td style="height:60px;line-height: 60px">图书小计</td>
+                        <td style="height:60px;line-height: 60px">
+                            <a class="btn btn-danger">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <b> 总价(元): 0.00 </b>
+            </div>
+
+            <div class="col-md-6">
+                <button class="btn btn-success" >结算</button>
+            </div>
+        </div>
+
+    </div>
+
 
 </div>
 
