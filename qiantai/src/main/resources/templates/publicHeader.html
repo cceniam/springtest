@@ -32,7 +32,7 @@
                 todo
                 <a v-if="!currentAccount" class="btn btn-default btn-sm" href="/register.html">注册</a>
                 <span v-if="currentAccount">欢迎您:{{currentAccount}}</span>
-                <a v-if="currentAccount" class="btn btn-default btn-sm" href="">我的购物车</a>
+                <a v-if="currentAccount" class="btn btn-default btn-sm" href="/mycart.html">我的购物车</a>
                 <a v-if="currentAccount" class="btn btn-default btn-sm" href="">我的订单</a>
                 <a v-if="currentAccount" class="btn btn-default btn-sm" href="/user/logout">退出</a>
             </div>
