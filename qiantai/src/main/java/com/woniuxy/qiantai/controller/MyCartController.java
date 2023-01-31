@@ -69,5 +69,17 @@ public class MyCartController {
         return currentUser;
     }
 
+    @RequestMapping("updateItemNum")
+    @ResponseBody
+    public void updateItemNum(Long bookId, HttpServletRequest request,Integer itemNum){
+        //itemNum 取值  -1 ,1 ,0 对应操作为  购买数量 -1,+1,删除
+
+        User currentUser = getCurrentUser(request);
+
+        myCartService.updateItemNum(currentUser.getId(),bookId,itemNum);
+
+    }
+
+
 
 }
