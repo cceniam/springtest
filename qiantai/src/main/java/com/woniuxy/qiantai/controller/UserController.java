@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author woniumrwang
@@ -57,57 +57,56 @@ public class UserController {
     RabbitTemplate rabbitTemplate;
 
     @RequestMapping("getKaptchaImage")
-    public void getKaptchaImage(HttpServletResponse response,HttpSession httpSession) throws IOException {
+    public void getKaptchaImage(HttpServletResponse response, HttpSession httpSession) throws IOException {
         //生成验证码
         String codeText = producer.createText();
-        codeText="0000"; //手动指定验证码,方便调试
-        httpSession.setAttribute("kaptchaCode",codeText);
+        codeText = "0000"; //手动指定验证码,方便调试
+        httpSession.setAttribute("kaptchaCode", codeText);
 
         BufferedImage codeImage = producer.createImage(codeText);
 
         response.setContentType("image/png");
-        ImageIO.write(codeImage,"png",response.getOutputStream());
+        ImageIO.write(codeImage, "png", response.getOutputStream());
 
     }
 
 
     @PostMapping("login")
-    public String login(String username, String password, String code,
-                        HttpSession httpSession, Model model,HttpServletResponse response){
+    public String login(String username, String password, String code, HttpSession httpSession, Model model, HttpServletResponse response) {
 
         //校验验证码
-        String kaptchaCode = (String)httpSession.getAttribute("kaptchaCode");
-        if (StringUtils.isEmpty(code) || !code.equals(kaptchaCode)){
-            model.addAttribute("errorInfo","验证码错误");
+        String kaptchaCode = (String) httpSession.getAttribute("kaptchaCode");
+        if (StringUtils.isEmpty(code) || !code.equals(kaptchaCode)) {
+            model.addAttribute("errorInfo", "验证码错误");
             return "login";
         }
 
-        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
-            model.addAttribute("errorInfo","用户名或密码错误");
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
+            model.addAttribute("errorInfo", "用户名或密码错误");
             return "login";
         }
 
         User userByAccount = userService.getUserByAccount(username);
-        if (null==userByAccount || !password.equals(userByAccount.getPassword())){
-            model.addAttribute("errorInfo","用户名或密码错误");
+        if (null == userByAccount || !password.equals(userByAccount.getPassword())) {
+            model.addAttribute("errorInfo", "用户名或密码错误");
             return "login";
         }
 
         //登录成功
         //httpSession.setAttribute("currentAccount",userByAccount.getAccount());
         String token = JwtUtils.createToken(userByAccount.getAccount(), 15);
-        CookieUtils.setUserToken2Cookie(response,token);
+        CookieUtils.setUserToken2Cookie(response, token);
 
         //在redis里也保存一份信息,有效期30分钟
-        stringRedisTemplate.opsForValue().set(token,userByAccount.getAccount(),30, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(token, userByAccount.getAccount(), 30, TimeUnit.MINUTES);
 
         return "redirect:/";
     }
 
     @RequestMapping("currentAccount")
     @ResponseBody
-    public String currentAccount(HttpSession httpSession, HttpServletRequest request){
-        String account="";
+    public String currentAccount(HttpSession httpSession, HttpServletRequest request) {
+        String account = "";
 
 //        String currentAccount = (String)httpSession.getAttribute("currentAccount");
         String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
@@ -119,13 +118,13 @@ public class UserController {
 
 
     @RequestMapping("logout")
-    public String logout(HttpSession httpSession,HttpServletResponse response,HttpServletRequest request){
+    public String logout(HttpSession httpSession, HttpServletResponse response, HttpServletRequest request) {
         //httpSession.removeAttribute("currentAccount");
         CookieUtils.deleteUserTokenFromCookie(response);
 
         //同时删除redis中的信息
         String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
-        if (!StringUtils.isEmpty(userTokenFromCookie)){
+        if (!StringUtils.isEmpty(userTokenFromCookie)) {
             stringRedisTemplate.delete(userTokenFromCookie);
         }
 
@@ -133,20 +132,20 @@ public class UserController {
     }
 
     @RequestMapping("redirectLoginHtml")
-    public String redirectLoginHtml(){
+    public String redirectLoginHtml() {
         return "redirect:/login.html";
     }
 
 
     @RequestMapping("getEmailCode")
     @ResponseBody
-    public String getEmailCode(String email){
+    public String getEmailCode(String email) {
 
         //正则表达式校验邮箱
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         boolean isOK = pattern.matcher(email).matches();
-        if (!isOK){
+        if (!isOK) {
             return "请输入正确邮箱";
         }
 //
@@ -161,18 +160,18 @@ public class UserController {
 //
 //        stringRedisTemplate.opsForValue().set(email,code,5,TimeUnit.MINUTES);
 
-        rabbitTemplate.convertAndSend("sendEmailExchange","sendEmail",email);
+        rabbitTemplate.convertAndSend("sendEmailExchange", "sendEmail", email);
 
         return "ok";
     }
 
     @RequestMapping("reg")
-    public String reg(String username,String password,String repass,String email,String emailCode,Model model){
+    public String reg(String username, String password, String repass, String email, String emailCode, Model model) {
 
         //校验邮箱验证码
         String emailCodeRedis = stringRedisTemplate.opsForValue().get(email);
-        if (StringUtils.isEmpty(emailCodeRedis) || !emailCodeRedis.equals(emailCode)){
-            model.addAttribute("errorInfo","邮箱验证码错误");
+        if (StringUtils.isEmpty(emailCodeRedis) || !emailCodeRedis.equals(emailCode)) {
+            model.addAttribute("errorInfo", "邮箱验证码错误");
             return "register";
         }
 

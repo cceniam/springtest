@@ -2,9 +2,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/woniubookhz0103?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://localhost:3306/lib?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: 'root'
+    password: '000000'
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initialSize: 10
@@ -26,14 +26,18 @@ spring:
         max-wait: 3000
   mail:
     host: smtp.qq.com
-    username: woniumrwang@qq.com  #邮箱名,一定要用你自己的
-    password: tvnomlspxwwpibfi # 邮箱授权码,一定要用你自己的
+    username: 289332602@qq.com  #邮箱名,一定要用你自己的
+    password: kenhmvvekdbgcagi # 邮箱授权码,一定要用你自己的
     default-encoding: utf-8
     port: 465
     properties:
       mail:
         debug: true
         smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
   rabbitmq:
@@ -58,3 +62,5 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: auto
+server:
+  port: 28088

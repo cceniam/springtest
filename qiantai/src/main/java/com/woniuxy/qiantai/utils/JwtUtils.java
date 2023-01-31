@@ -34,9 +34,14 @@ public class JwtUtils {
 
     public static Claims parseClaims(String token){
         JwtParser parser = Jwts.parser();
+        try {
         Jws<Claims> claimsJws = parser.setSigningKey(secret).parseClaimsJws(token);
         Claims body = claimsJws.getBody();
         return body ;
+        }catch (Exception e){
+            System.out.println(e+"JWT为NULL");
+        }
+        return null;
     }
 
     /**
@@ -46,7 +51,10 @@ public class JwtUtils {
      */
     public static String getAccount(String token){
         Claims body = parseClaims(token);
-        return  (String) body.get("account");
+        if (body != null) {
+            return  (String) body.get("account");
+        }
+        else return null;
     }
 
     /**
