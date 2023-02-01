@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>mycart</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+
+<div th:insert="publicHeader"/>
+<script th:src="@{/publicHeader.js}"></script>
+
+
+
+<div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
+
+    <div class="container col-md-12" v-if="cartItems.length<=0" >
+        <h3 style="text-align: center">还没有任何加购,快去购买吧~</h3>
+    </div>
+
+    <div class="container" v-if="cartItems.length>0">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="cartCheck" @click="selectAll" />
+                        </th>
+                        <th>图书名称</th>
+                        <th>图书图片</th>
+                        <th>图书单价(元)</th>
+                        <th>购买数量</th>
+                        <th>小计</th>
+                        <th>操作</th>
+                    </tr>
+                    <tr v-for="cartItem in cartItems">
+                        <td>
+                            <input type="checkbox" name="cartItemCheck" :value="cartItem.bookId" @click="selectItem" />
+                        </td>
+                        <td v-text="cartItem.bookName" style="height:60px;line-height: 60px">图书名称</td>
+                        <td>
+                            <img :src="cartItem.imgSrc" style="width: 60px;height: 60px; border-radius: 50%"/>
+                        </td>
+                        <td v-text="cartItem.bookPrice" style="height:60px;line-height: 60px">图书单价</td>
+                        <td style="height:60px;line-height: 60px">
+                            <a @click.prevent="updateItemNum(cartItem.bookId,-1)" class="btn btn-default btn-sm" >一</a>
+                            &nbsp;<span v-text="cartItem.itemNum">5</span>&nbsp;
+                            <a @click.prevent="updateItemNum(cartItem.bookId,1)" class="btn btn-default btn-sm" >十</a>
+                        </td>
+                        <td v-text="cartItem.sumPrice" style="height:60px;line-height: 60px">图书小计</td>
+                        <td style="height:60px;line-height: 60px">
+                            <a @click.prevent="updateItemNum(cartItem.bookId,0)" class="btn btn-danger">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <b> 总价(元): {{totalPrice}} </b>
+            </div>
+
+            <div class="col-md-6">
+                <button class="btn btn-success" @click="toOrderPreview" >结算</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    console.log(".........mycart...........")
+
+    new Vue({
+        el: "#app"
+        ,
+        data: {
+            cartItems:[],
+            totalPrice:"0.00"
+
+        }
+        ,
+        methods: {
+            initCartItems(){
+                let _this = this;
+                $.post("/mycart/allItem",function (data) {
+                    console.log(data)
+
+                    _this.cartItems = data;
+                })
+            }
+            ,
+            updateItemNum(bookId,itemNum){
+                let _this=this;
+                let params={
+                    bookId:bookId,
+                    itemNum:itemNum
+                }
+                console.log(params)
+                $.post("/mycart/updateItemNum",params,function (data) {
+                    _this.initCartItems();
+                    //触发计算总价
+                    _this.calTotalPrice();
+                })
+            }
+            ,
+            selectAll(){
+                //先获取 cartCheck 的选中状态
+                let allCheck = $("#cartCheck");
+                console.log(allCheck.prop("checked"))
+                let allCheckFlag = allCheck.prop("checked");
+
+                //所有 cartItemCheck 的选中状态与 cartCheck 保持一致
+                let allItemCheck = $("input[name='cartItemCheck']");
+                console.log(allItemCheck)
+                allItemCheck.each(function () {
+                    $(this).prop("checked",allCheckFlag)
+                })
+
+                //触发计算总价
+                this.calTotalPrice();
+
+            }
+            ,
+            selectItem(){
+
+                //cartCheck 是否选中的标记
+                let allCheckFlag = true;
+
+                //获取所有 cartItemCheck
+                let allItemCheck = $("input[name='cartItemCheck']");
+                console.log(allItemCheck)
+                allItemCheck.each(function () {
+                    if(!$(this).prop("checked")){
+                        allCheckFlag = false;
+                    }
+                })
+
+                //更新cartCheck的选中状态
+                $("#cartCheck").prop("checked",allCheckFlag)
+
+                //触发计算总价
+                this.calTotalPrice();
+            }
+            ,
+            calTotalPrice(){
+
+                //1.收集所有被选中cartItem的id
+                let bookIds=[];
+
+                //获取所有 cartItemCheck
+                let allItemCheck = $("input[name='cartItemCheck']");
+                allItemCheck.each(function () {
+                    if($(this).prop("checked")){
+                        bookIds.push($(this).val())
+                    }
+                })
+
+                console.log(bookIds)
+
+                //如果没有选中任何item,那就置为0.00
+                if(bookIds.length<1){
+                    this.totalPrice="0.00";
+                    return;
+                }
+
+                //2.请求后台接口,计算总价
+                let _this = this;
+                $.post("/mycart/calTotalPrice",{bookIds:bookIds},function (data) {
+                    _this.totalPrice=data;
+                })
+
+            }
+            ,
+            toOrderPreview(){
+                //收集已选CartItem的bookIds
+                let bookIds=[];
+
+                //获取所有 cartItemCheck
+                let allItemCheck = $("input[name='cartItemCheck']");
+                allItemCheck.each(function () {
+                    if($(this).prop("checked")){
+                        bookIds.push($(this).val())
+                    }
+                })
+
+                console.log(bookIds)
+
+                //bookIds不为空才能进行结算
+                if(bookIds.length<1){
+                    alert("至少选择一项才能去结算~")
+                    return;
+                }
+
+
+                location.href="/mycart/toOrderPreview?bookIds="+bookIds;
+
+            }
+
+
+        }
+        ,
+        created(){
+            this.initCartItems();
+        }
+
+    });
+
+
+</script>
+
+
+<div th:insert="publicFooter"/>
+<script th:src="@{/publicFooter.js}"></script>
+
+
+</body>
+</html>

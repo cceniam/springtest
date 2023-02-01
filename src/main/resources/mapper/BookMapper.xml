@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch.booklib.mapper.BookMapper">
+
+    <resultMap id="BaseResultMap" type="com.ch.booklib.entity.Book">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="typeid" column="typeId" jdbcType="INTEGER"/>
+            <result property="provider" column="provider" jdbcType="VARCHAR"/>
+            <result property="author" column="author" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="detail" column="detail" jdbcType="VARCHAR"/>
+            <result property="imgsrc" column="imgsrc" jdbcType="VARCHAR"/>
+            <result property="collectioncount" column="collectioncount" jdbcType="INTEGER"/>
+            <result property="storecount" column="storecount" jdbcType="INTEGER"/>
+            <result property="buycount" column="buycount" jdbcType="INTEGER"/>
+            <result property="readcount" column="readcount" jdbcType="INTEGER"/>
+            <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+            <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="version" column="version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,typeId,
+        provider,author,price,
+        detail,imgsrc,collectioncount,
+        storecount,buycount,readcount,
+        createtime,updatetime,state,
+        version
+    </sql>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ch.booklib.mapper.AddressMapper">
+
+    <resultMap id="BaseResultMap" type="com.ch.booklib.entity.Address">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="province" column="province" jdbcType="VARCHAR"/>
+            <result property="city" column="city" jdbcType="VARCHAR"/>
+            <result property="area" column="area" jdbcType="VARCHAR"/>
+            <result property="detailaddress" column="detailAddress" jdbcType="VARCHAR"/>
+            <result property="tel" column="tel" jdbcType="VARCHAR"/>
+            <result property="reciver" column="reciver" jdbcType="VARCHAR"/>
+            <result property="emailcode" column="emailCode" jdbcType="VARCHAR"/>
+            <result property="userid" column="userId" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="isdefault" column="isDefault" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,province,city,
+        area,detailAddress,tel,
+        reciver,emailCode,userId,
+        status,isDefault
+    </sql>
+</mapper>
