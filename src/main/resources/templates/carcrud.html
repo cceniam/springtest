@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>car</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <link rel="stylesheet" th:href="@{/bootstrap.min.css}"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+  <script th:src="@{/vue.js}"></script>
+</head>
+<body>
+<div th:id="_app">
+    <table class="table">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>typeId</th>
+            <th>provider</th>
+            <th>author</th>
+            <th>price</th>
+            <th>detail</th>
+            <th>imgsrc</th>
+            <th>collectioncount</th>
+            <th>storecount</th>
+            <th>buycount</th>
+            <th>readcount</th>
+            <th>createtime</th>
+            <th>updatetime</th>
+            <th>state</th>
+            <th>verison</th>
+        </tr>
+        <tr v-for="book in bookList">
+            <td v-text="book.id">id</td>
+            <td v-text="book.name">name</td>
+            <td v-text="book.typeId">typeId</td>
+            <td v-text="book.provider">provider</td>
+            <td v-text="book.author">author</td>
+            <td v-text="book.price">price</td>
+            <td v-text="book.detail">detail</td>
+            <td v-text="book.imgsrc">imgsrc</td>
+            <td v-text="book.collectioncount">collectioncount</td>
+            <td v-text="book.storecount">storecount</td>
+            <td v-text="book.buycount">buycount</td>
+            <td v-text="book.readcount">readcount</td>
+            <td v-text="book.createtime">createtime</td>
+            <td v-text="book.updatetime">updatetime</td>
+            <td v-text="book.state">state</td>
+            <td v-text="book.verison">verison</td>
+        </tr>
+    </table>
+
+</div>
+
+<script>
+    new Vue({
+        el:"#_app",
+        data:{
+            bookList:[]
+
+        },
+        method:{
+            initBookList(){
+                let _this = this;
+
+                $.get("/book/crud",function (data) {
+                    console.log(data)
+                    _this.bookList = data;
+                })
+            }
+
+        },
+        created(){
+            this.initBookList();
+
+        }
+
+    });
+</script>
+
+</body>
+</html>

@@ -7,8 +7,7 @@
     <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"-->
     <!--          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>-->
     <!--    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
-    <link rel="stylesheet" th:href="@{/bootstrap.min.css}"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/bootstrap.min.css}"/>
     <script th:src="@{/vue.js}"></script>
 </head>
 <body>
@@ -17,10 +16,63 @@
 <script th:src="@{/publicHeader.js}"></script>
 
 
-
 <div class="container-fluid" id="app" style="margin-top: 180px;margin-bottom: 100px">
 
-    myOrder
+
+    <div class="container col-md-12" v-if="orderList.length<=0">
+        <h3 style="text-align: center">还没有任何加购,快去购买吧~</h3>
+    </div>
+
+
+    <div class="row" v-if="orderList.length>0">
+        <div class="container">
+            <div v-for="order in orderList">
+                <div class="row" style="height: 40px ;line-height: 40px">
+                    <div class="col-md-12">
+                        <p style="background-color: #CCCCCC; font-size: 15px; line-height: 40px">订单编号:{{order.orderNum}}
+                            下单时间:{{order.orderTime}} 总金额:{{order.totalPrice}}元</p>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-md-10 col-md-offset-1">
+                        <table class="table">
+                            <tr>
+                                <th>图片</th>
+                                <th>名称</th>
+                                <th>购买数量</th>
+                                <th>金额</th>
+                            </tr>
+                            <tr v-for="item in order.orderItemList">
+                                <td>
+                                    <img style="height: 60px;width: 60px" :src="item.imgSrc">
+                                </td>
+                                <td v-text="item.bookName" style="vertical-align: middle">名称</td>
+                                <td v-text="item.buyCount" style="vertical-align: middle">购买数量</td>
+                                <td v-text="item.sumPrice" style="vertical-align: middle">金额</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-1">
+                        <!--订单状态 1.未支付  2 . 已支付  3.退款中  4. 已退款  5.已取消-->
+                        <button v-if="order.state == 1" class="btn btn-primary" @click="updateState(order.id,2)">
+                            去支付
+                        </button>
+                        <button v-if="order.state == 1" class="btn btn-primary" @click="updateState(order.id,5)">取消
+                        </button>
+                        <button v-if="order.state == 2" class="btn btn-primary" @click="updateState(order.id,3)">退款
+                        </button>
+                        <button v-if="order.state == 3" class="btn btn-primary" @click="updateState(order.id,4)">
+                            退款中...
+                        </button>
+                        <button v-if="order.state == 4" class="btn btn-primary">已退款</button>
+                        <button v-if="order.state == 5" class="btn btn-primary">已取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 <script>
@@ -31,15 +83,44 @@
         el: "#app"
         ,
         data: {
+            orderList: []
 
         }
         ,
         methods: {
 
+            initOrderList() {
+                let _this = this;
+
+                $.get("/order/all", function (data) {
+                    console.log(data)
+
+                    _this.orderList = data;
+                })
+            }
+            ,
+            updateState(orderId, newState) {
+
+                let params = {
+                    orderId: orderId,
+                    newState: newState
+                }
+
+                console.log(params)
+
+                let _this = this;
+
+                $.post("/order/updateState", params, function (data) {
+                    //状态修改完成后刷新页面数据
+                    _this.initOrderList();
+                })
+
+            }
+
         }
         ,
-        created(){
-
+        created() {
+            this.initOrderList();
         }
 
     });

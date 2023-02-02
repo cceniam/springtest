@@ -67,6 +67,15 @@ public class BookController {
 
         return pageBooksByTypeId;
     }
+@RequestMapping("tocrud")
+public String toCRUD(){
+        return "redirect:carcrud";
+}
+    @RequestMapping("crud")
+    @ResponseBody
+    public List<Book> crud(){
+        return bookService.list();
+    }
 
 
 }
