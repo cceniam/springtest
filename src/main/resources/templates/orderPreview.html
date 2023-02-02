@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <title>orderPreview</title>
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
+    <link rel="stylesheet" th:href="@{/bootstrap.min.css}"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
+    <script th:src="@{/vue.js}"></script>
 </head>
 <body>
 
@@ -22,13 +25,14 @@
     <div class="container">
         <div class="row" >
             <div class="col-md-8">
-                <select class="form-control" name="address">
-                    <option>地址1</option>
-                    <option>地址2</option>
+                <select class="form-control" name="address" v-model="defaultAddressId">
+<!--                    <option>地址1</option>-->
+<!--                    <option>地址2</option>-->
+                    <option v-for="a in addressList" :value="a.id" >{{a.province}}{{a.city}}{{a.area}}{{a.detailAddress}}  {{a.tel}}   {{a.reciver}}</option>
                 </select>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">新增地址</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="clearAddForm">新增地址</button>
             </div>
         </div>
     </div>
@@ -65,7 +69,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <button class="btn btn-success" >提交订单</button>
+                    <button class="btn btn-success" @click.prevent="submitOrder">提交订单</button>
                 </div>
             </div>
         </div>
@@ -83,51 +87,54 @@
                     <form>
                         <div class="form-group">
                             <label for="provinceId">省</label>
-                            <select class="form-control" id="provinceId" placeholder="请选择省份">
-                                <option value="">请选择省份</option>
-                                <option value="">A</option>
-                                <option value="">B</option>
+                            <select class="form-control" id="provinceId" placeholder="请选择省份" v-model="provinceId" @change="refreshCity">
+                                <option value="-1">请选择省份</option>
+<!--                                <option value="">A</option>-->
+<!--                                <option value="">B</option>-->
+                                <option v-for="province in provinceList" :value="province.id" v-text="province.name"></option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="cityId">市</label>
-                            <select class="form-control" id="cityId" placeholder="请选择城市">
-                                <option value="">请选择城市</option>
-                                <option value="">A</option>
-                                <option value="">B</option>
+                            <select class="form-control" id="cityId" placeholder="请选择城市" v-model="cityId" @change="refreshCounty">
+                                <option value="-1">请选择城市</option>
+<!--                                <option value="">A</option>-->
+<!--                                <option value="">B</option>-->
+                                <option v-for="city in cityList" :value="city.id" v-text="city.name"></option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="areaId">区</label>
-                            <select class="form-control" id="areaId" placeholder="请选择区域">
-                                <option value="">请选择区域</option>
-                                <option value="">A</option>
-                                <option value="">B</option>
+                            <select class="form-control" id="areaId" placeholder="请选择区域"  v-model="countyId">
+                                <option value="-1">请选择区域</option>
+<!--                                <option value="">A</option>-->
+<!--                                <option value="">B</option>-->
+                                <option v-for="county in countyList" :value="county.id" v-text="county.name"></option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="detailAddress">详细地址</label>
-                            <input type="text" class="form-control" id="detailAddress" placeholder="请输入详细地址">
+                            <input type="text" v-model="detail" class="form-control" id="detailAddress" placeholder="请输入详细地址">
                         </div>
 
                         <div class="form-group">
                             <label for="tel">手机号</label>
-                            <input type="text" class="form-control" id="tel" placeholder="请输入手机号">
+                            <input type="text" v-model="phoneNumber" class="form-control" id="tel" placeholder="请输入手机号">
                         </div>
 
                         <div class="form-group">
                             <label for="reciever">收件人姓名</label>
-                            <input type="text" class="form-control" id="reciever" placeholder="请输入收件人">
+                            <input type="text" v-model="reciever" class="form-control" id="reciever" placeholder="请输入收件人">
                         </div>
                         <div class="form-group">
                             <label for="code">邮编</label>
-                            <input type="text" class="form-control" id="code" placeholder="请输入邮编">
+                            <input type="text" v-model="mailCode" class="form-control" id="code" placeholder="请输入邮编">
                         </div>
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="isDefault" > 是否默认
+                                <input type="checkbox" v-model="isDefault" id="isDefault" > 是否默认
                             </label>
                         </div>
                     </form>
@@ -135,7 +142,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存</button>
+                    <button type="button" class="btn btn-primary" @click.prevent="saveAddress">保存</button>
                 </div>
             </div>
         </div>
@@ -155,7 +162,20 @@
         data: {
             bookIds:[[${bookIds}]],
             totalPrice:"0.00",
-            cartItems:[]
+            cartItems:[],
+            addressList:[],
+            defaultAddressId:-1,
+            provinceList:[],
+            provinceId:-1,
+            cityList:[],
+            cityId:-1,
+            countyList:[],
+            countyId:-1,
+            detail:'',
+            phoneNumber:'',
+            reciever:'',
+            mailCode:'',
+            isDefault:'',
         }
         ,
         methods: {
@@ -176,11 +196,183 @@
 
 
             }
+            ,
+            initAddressList(){
+                //去后端获取当前用户的所有收货地址
+                let _this = this;
+
+                $.get("/address/all",function (data) {
+                    console.log(data)
+
+                    _this.addressList = data;
+
+                    //确认默认地址的id
+                    for(let address of data){
+                        if(address.isDefault == '1'){
+                            _this.defaultAddressId = address.id;
+                            break;
+                        }
+                    }
+
+                })
+
+            }
+            ,
+            initProvinceList(){  //省 / 直辖市
+                let _this = this;
+
+                $.get("/china/queryList?pid=0",function (data) {
+                    console.log(data)
+
+                    _this.provinceList = data;
+
+                    //市 区 选择项要置空
+                    _this.cityList=[];
+                    _this.cityId = -1;
+                    _this.countyList = [];
+                    _this.countyId = -1;
+
+                })
+
+
+            }
+            ,
+            refreshCity(){   //市  / 直辖市的区
+                console.log(this.provinceId)
+
+                let _this = this;
+
+                $.get("/china/queryList?pid="+this.provinceId,function (data) {
+                    console.log(data)
+
+                    _this.cityList = data;
+
+                    //把县数据置空
+                    _this.countyList = [];
+                    _this.countyId = -1;
+                })
+
+            }
+            ,
+            refreshCounty(){   // 县 / -
+                console.log(this.cityId)
+
+                let _this = this;
+
+                $.get("/china/queryList?pid="+this.cityId,function (data) {
+                    console.log(data)
+
+                    _this.countyList = data;
+                })
+
+            }
+            ,
+            saveAddress(){
+
+                //搜集表单数据
+
+                //省市区要id转name
+                let provinceName = "";
+                for(let item of this.provinceList){
+                    if (item.id == this.provinceId){
+                        provinceName = item.name;
+                    }
+                }
+
+                let cityName = "";
+                for(let item of this.cityList){
+                    if (item.id == this.cityId){
+                        cityName = item.name;
+                    }
+                }
+
+                let countyName = "";
+                for(let item of this.countyList){
+                    if (item.id == this.countyId){
+                        countyName = item.name;
+                    }
+                }
+
+
+                //是否more地址 要 布尔值转字符串
+                let defaultFlag = this.isDefault ? "1" : "0";
+
+                let params = {
+                    province:provinceName,
+                    city:cityName,
+                    area:countyName,
+                    detailAddress:this.detail,
+                    tel:this.phoneNumber,
+                    reciver:this.reciever,
+                    emailCode:this.mailCode,
+                    isDefault:defaultFlag
+                }
+
+                console.log(params)
+
+                let _this=this;
+
+                //数据提交后端接口,新增地址
+                $.post("/address/add",params,function (data) {
+                    console.log(data)
+
+                    //关闭弹窗
+                    $("#myModal").modal('hide')
+
+                    //刷新可选地址
+                    _this.initAddressList();
+                })
+
+
+            }
+            ,
+            clearAddForm(){
+                //打开新增地址表单时,清空表单数据
+                this.provinceId=-1;
+                this.cityId=-1;
+                this.countyId=-1;
+                this.detail="";
+                this.phoneNumber="";
+                this.receiver="";
+                this.mailCode="";
+                this.isDefault="";
+            }
+            ,
+            submitOrder(){
+                //提交订单:  要结算的书籍的id    收货地址id   当前用户信息(后台直接获取)
+                console.log(this.bookIds)
+                console.log(this.defaultAddressId)
+
+                let params={
+                    bookIds : this.bookIds,
+                    addressId : this.defaultAddressId
+                }
+
+                console.log(params)
+
+                $.post("/order/createOrder",params,function (data) {
+                    console.log(data)
+
+                    if(data == "ok"){
+                        //订单生成成功,前往我的订单页
+                        console.log("订单生成成功")
+
+                        location.href="/myOrder.html";
+
+                    }else{
+                        alert(data)
+                    }
+                })
+
+
+            }
 
         }
         ,
         created(){
             this.initCartOrder();
+            this.initAddressList();
+            this.initProvinceList();
         }
 
     });

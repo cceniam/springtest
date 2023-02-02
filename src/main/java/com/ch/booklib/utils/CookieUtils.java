@@ -21,7 +21,7 @@ public class CookieUtils {
     //把token从Cookie获取到
     public static String getCookieValueByName(HttpServletRequest request, String cookieName){
         Cookie[] cookies = request.getCookies();//获取所有的cookie
-        if (cookies != null && cookies.length > 0){
+        if (cookies != null){
             for(Cookie c :cookies){
                 if (c.getName().equals(cookieName)) {
                     return c.getValue();
