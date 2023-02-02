@@ -55,6 +55,25 @@ public class OrderController {
         return currentUser;
     }
 
+    @RequestMapping("createOrder")
+    @ResponseBody
+    public String createOrder(@RequestParam("bookIds[]") Long[] bookIds, Integer addressId, HttpServletRequest request){
+        //获取当前用户信息
+        User currentUser = getCurrentUser(request);
+
+        try{
+            orderService.createOrder(currentUser,bookIds,addressId);
+        }catch (RuntimeException e){
+            return e.getMessage();
+        }
+
+        return "ok";
+
+
+
+
+    }
+
 
 }
 

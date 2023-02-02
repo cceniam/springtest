@@ -1,7 +1,13 @@
 package com.ch.booklib.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ch.booklib.entity.Book;
+import com.ch.booklib.entity.Item;
 import com.ch.booklib.entity.Order;
+import com.ch.booklib.entity.User;
+import com.ch.booklib.service.BookService;
+import com.ch.booklib.service.ItemService;
 import com.ch.booklib.service.OrderService;
 import com.ch.booklib.mapper.OrderMapper;
 import com.ch.booklib.vo.CartItem;
@@ -10,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +33,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
     implements OrderService{
     @Autowired
     RedisTemplate<String,Object> stringObjectRedisTemplate;
+    @Autowired
+    ItemService itemService;
+    @Autowired
+    BookService bookService;
 
 
     @Override
@@ -53,6 +65,57 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order>
         cartOrder.setTotalPrice(totalPrice);
 
         return cartOrder;
+    }
+
+    /**
+     * @param currentUser
+     * @param bookIds
+     * @param addressId
+     */
+    @Override
+    @Transactional
+    public void createOrder(User currentUser, Long[] bookIds, Integer addressId) {
+//        获取要结算项目的详情
+        CartOrder cartOrder =getCartOrder(currentUser.getId(),bookIds);
+//        创建订单
+        Order order = new Order();
+//        将订单写入订单表
+        String orderNum ="WONIU"+new Date().getTime();
+        order.setOrdernum(orderNum);
+//        order.setTotalprice(myCartService.calTotalPrice(currentUser.getId(),bookIds));
+        order.setTotalprice(cartOrder.getTotalPrice());
+        order.setUserid(currentUser.getId());
+        order.setAddressid(addressId.longValue());  //addressId需要转换为logn值
+        order.setCreatetime(new Date());
+        order.setState(1);  //订单状态 1.未支付  2 . 已支付  3.退款中  4. 已退款  5.已取消
+        boolean save = this.save(order);
+//        储存订单详情
+        List<CartItem> cartItems = cartOrder.getCartItems();
+        for (CartItem cartItem : cartItems) {
+            Item item = new Item();
+            item.setBookid(cartItem.getBookId());
+            item.setBookname(cartItem.getBookName());
+            item.setPrice(cartItem.getBookPrice());
+            item.setBcount(cartItem.getItemNum());
+            item.setSumprice(cartItem.getSumPrice());
+            item.setOrderid(order.getId());
+            item.setCreatetime(new Date());
+            item.setState(1);  //订单项状态,我们这里取默认值1
+            itemService.save(item);
+//        更新库存和购买量
+            QueryWrapper<Book> wrapper = new QueryWrapper<>();
+//            wrapper.eq("id",item.getBookid()).ge("storecount",)
+
+
+
+//        从购物车中删除已经结算的书籍
+
+        }
+
+
+
+
+
     }
 }
 

@@ -2,6 +2,7 @@ package com.ch.booklib.service;
 
 import com.ch.booklib.entity.Order;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.ch.booklib.entity.User;
 import com.ch.booklib.vo.CartOrder;
 
 /**
@@ -12,4 +13,5 @@ import com.ch.booklib.vo.CartOrder;
 public interface OrderService extends IService<Order> {
     CartOrder getCartOrder(Long userId, Long[] bookIds);
 
+    void createOrder(User currentUser, Long[] bookIds, Integer addressId);
 }
