@@ -57,6 +57,7 @@ mybatis-plus:
   type-aliases-package: com.ch.book.entity
   configuration:
     map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
       id-type: auto
