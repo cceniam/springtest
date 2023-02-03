@@ -2,11 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>car</title>
-  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <link rel="stylesheet" th:href="@{/bootstrap.min.css}"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>
-  <script th:src="@{/vue.js}"></script>
+    <title>myOrder</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"/>-->
+<!--        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>-->
+    <link rel="stylesheet" th:href="@{/bootstrap.min.css}"/>
+    <script th:src="@{/vue.js}"></script>
 </head>
 <body>
 <div th:id="_app">
@@ -28,24 +30,32 @@
             <th>updatetime</th>
             <th>state</th>
             <th>verison</th>
+            <th>修改</th>
+            <th>删除</th>
         </tr>
         <tr v-for="book in bookList">
-            <td v-text="book.id">id</td>
-            <td v-text="book.name">name</td>
-            <td v-text="book.typeId">typeId</td>
-            <td v-text="book.provider">provider</td>
-            <td v-text="book.author">author</td>
-            <td v-text="book.price">price</td>
-            <td v-text="book.detail">detail</td>
-            <td v-text="book.imgsrc">imgsrc</td>
-            <td v-text="book.collectioncount">collectioncount</td>
-            <td v-text="book.storecount">storecount</td>
-            <td v-text="book.buycount">buycount</td>
-            <td v-text="book.readcount">readcount</td>
-            <td v-text="book.createtime">createtime</td>
-            <td v-text="book.updatetime">updatetime</td>
-            <td v-text="book.state">state</td>
-            <td v-text="book.verison">verison</td>
+            <td><input type="text" name="id"  v-model="book.id"></td>
+            <td><input type="text" name="name"  v-model="book.name"></td>
+            <td><input type="text" name="typeId"  v-model="book.typeid"></td>
+            <td><input type="text" name="provider"  v-model="book.provider"></td>
+            <td><input type="text" name="author"  v-model="book.author"></td>
+            <td><input type="text" name="price"  v-model="book.price"></td>
+            <td><input type="text" name="detail"  v-model="book.detail"></td>
+            <td><input type="text" name="imgsrc"  v-model="book.imgsrc"></td>
+            <td><input type="text" name="collectioncount"  v-model="book.collectioncount"></td>
+            <td><input type="text" name="storecount"  v-model="book.storecount"></td>
+            <td><input type="text" name="buycount"  v-model="book.buycount"></td>
+            <td><input type="text" name="readcount"  v-model="book.readcount"></td>
+            <td><input type="text" name="createtime"  v-model="book.createtime"></td>
+            <td><input type="text" name="updatetime"  v-model="book.updatetime"></td>
+            <td><input type="text" name="state"  v-model="book.state"></td>
+            <td><input type="text" name="verison"  v-model="book.version"></td>
+            <td>
+                <button @click.prevent="update(book)">修改</button>
+            </td>
+            <td>
+                <button @click.prevent="del(book)">删除</button>
+            </td>
         </tr>
     </table>
 
@@ -53,23 +63,32 @@
 
 <script>
     new Vue({
-        el:"#_app",
-        data:{
-            bookList:[]
+        el: "#_app",
+        data: {
+            bookList: [],
+            book:''
 
         },
-        method:{
-            initBookList(){
+        methods: {
+            initBookList() {
                 let _this = this;
 
-                $.get("/book/crud",function (data) {
+                $.get("/book/crud", function (data) {
                     console.log(data)
                     _this.bookList = data;
                 })
+            },
+            update(book){
+                let _this = this;
+                console.log(book)
+                var book = JSON.stringify(book)
+                console.log(book)
+                $.post("/book/update",{book:book})
+
             }
 
         },
-        created(){
+        created() {
             this.initBookList();
 
         }

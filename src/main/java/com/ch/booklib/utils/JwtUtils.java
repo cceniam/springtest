@@ -71,7 +71,7 @@ public class JwtUtils {
         try {
             account=getAccount(token);
         }catch (Exception e){
-            e.printStackTrace();
+//            e.printStackTrace();
             //log......
         }
         return account;
