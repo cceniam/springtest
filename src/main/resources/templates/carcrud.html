@@ -84,9 +84,14 @@
                 var book = JSON.stringify(book)
                 console.log(book)
                 $.post("/book/update",{book:book})
-
-            }
-
+            },
+            del(book){
+                let _this = this;
+                console.log(book)
+                var book = JSON.stringify(book)
+                console.log(book)
+                $.post("/book/del",{book:book})
+            },
         },
         created() {
             this.initBookList();

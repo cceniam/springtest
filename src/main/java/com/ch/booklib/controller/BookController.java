@@ -89,10 +89,20 @@ public class BookController {
         String book1 = req.getParameter("book");
         ObjectMapper mapper = new ObjectMapper();
         book = mapper.readValue(book1, Book.class);
-        System.out.println(book);
-
+        boolean b = bookService.saveOrUpdate(book);
+        if (b){
+            System.out.println("修改成功");
+        }
+    }
+    @RequestMapping("del")
+    @ResponseBody
+    public void delcrud(Book book, HttpServletRequest req) throws JsonProcessingException {
+        String book1 = req.getParameter("book");
+        ObjectMapper mapper = new ObjectMapper();
+        book = mapper.readValue(book1, Book.class);
+//        boolean b = bookService.removeById(book);
+            System.out.println("模拟删除成功");
 
     }
-
 }
 
