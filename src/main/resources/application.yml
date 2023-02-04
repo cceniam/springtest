@@ -1,0 +1,66 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/libdemo?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: 'root'
+    password: '000000'
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initialSize: 10
+      maxActive: 30
+      minIdle: 5
+      maxWait: 2000
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  thymeleaf:
+    cache: false
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      jedis:
+        pool:
+          max-active: 30
+          max-idle: 10
+          min-idle: 3
+          max-wait: 3000
+  mail:
+    host: smtp.qq.com
+    username: 289332602@qq.com  #???,????????
+    password: kenhmvvekdbgcagi # ?????,????????
+    default-encoding: utf-8
+    port: 465
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    #???????????(Exchange)
+    publisher-confirm-type: correlated
+    #??????????(Queue)
+    publisher-returns: true
+    listener:
+      simple:
+        acknowledge-mode: manual
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*.xml
+  type-aliases-package: com.ch.libdemo.entity
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+server:
+  port: 8080
+
