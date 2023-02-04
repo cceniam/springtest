@@ -44,17 +44,6 @@ public class RabbitConfig {
             }
         });
 
-//        rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
-//            @Override
-//            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-//                System.out.println("ReturnCallback:     "+"消息："+message);
-//                System.out.println("ReturnCallback:     "+"回应码："+replyCode);
-//                System.out.println("ReturnCallback:     "+"回应信息："+replyText);
-//                System.out.println("ReturnCallback:     "+"交换机："+exchange);
-//                System.out.println("ReturnCallback:     "+"路由键："+routingKey);
-//            }
-//        });
-
         return rabbitTemplate;
     }
 
