@@ -2,6 +2,9 @@ package com.ch.libdemo.mapper;
 
 import com.ch.libdemo.entity.Address;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.context.annotation.Bean;
+@Mapper
 
 /**
 * @author q2893

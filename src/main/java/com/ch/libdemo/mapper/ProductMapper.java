@@ -2,6 +2,7 @@ package com.ch.libdemo.mapper;
 
 import com.ch.libdemo.entity.Product;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author q2893
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-02-04 16:00:51
 * @Entity com.ch.libdemo.entity.Product
 */
+@Mapper
 public interface ProductMapper extends BaseMapper<Product> {
 
 }
