@@ -42,7 +42,7 @@ public class Address implements Serializable {
      * 
      */
     @TableField(value = "user_id")
-    private Integer userId;
+    private Integer user_id;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -63,7 +63,7 @@ public class Address implements Serializable {
             && (this.getTel() == null ? other.getTel() == null : this.getTel().equals(other.getTel()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getAddress() == null ? other.getAddress() == null : this.getAddress().equals(other.getAddress()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
+            && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()));
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Address implements Serializable {
         result = prime * result + ((getTel() == null) ? 0 : getTel().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getAddress() == null) ? 0 : getAddress().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
         return result;
     }
 
@@ -88,7 +88,7 @@ public class Address implements Serializable {
         sb.append(", tel=").append(tel);
         sb.append(", name=").append(name);
         sb.append(", address=").append(address);
-        sb.append(", userId=").append(userId);
+        sb.append(", user_id=").append(user_id);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -2,18 +2,17 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--suppress SyntaxError -->
 <mapper namespace="com.ch.libdemo.mapper.OrderitemMapper">
 
     <resultMap id="BaseResultMap" type="com.ch.libdemo.entity.Orderitem">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="productId" column="product_id" jdbcType="INTEGER"/>
+            <result property="product_id" column="product_id" jdbcType="INTEGER"/>
             <result property="productname" column="productname" jdbcType="VARCHAR"/>
             <result property="productprice" column="productprice" jdbcType="DECIMAL"/>
             <result property="productimgsrc" column="productimgsrc" jdbcType="VARCHAR"/>
             <result property="buycount" column="buycount" jdbcType="INTEGER"/>
             <result property="sumprice" column="sumprice" jdbcType="DECIMAL"/>
-            <result property="orderId" column="order_id" jdbcType="INTEGER"/>
+            <result property="order_id" column="order_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

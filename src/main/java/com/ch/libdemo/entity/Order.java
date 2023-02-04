@@ -31,13 +31,13 @@ public class Order implements Serializable {
      * 
      */
     @TableField(value = "user_id")
-    private Integer userId;
+    private Integer user_id;
 
     /**
      * 
      */
     @TableField(value = "address_id")
-    private Integer addressId;
+    private Integer address_id;
 
     /**
      * 
@@ -68,8 +68,8 @@ public class Order implements Serializable {
         Order other = (Order) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getOrdernum() == null ? other.getOrdernum() == null : this.getOrdernum().equals(other.getOrdernum()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
-            && (this.getAddressId() == null ? other.getAddressId() == null : this.getAddressId().equals(other.getAddressId()))
+            && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()))
+            && (this.getAddress_id() == null ? other.getAddress_id() == null : this.getAddress_id().equals(other.getAddress_id()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getTotalprice() == null ? other.getTotalprice() == null : this.getTotalprice().equals(other.getTotalprice()));
     }
@@ -80,8 +80,8 @@ public class Order implements Serializable {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getOrdernum() == null) ? 0 : getOrdernum().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
-        result = prime * result + ((getAddressId() == null) ? 0 : getAddressId().hashCode());
+        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
+        result = prime * result + ((getAddress_id() == null) ? 0 : getAddress_id().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getTotalprice() == null) ? 0 : getTotalprice().hashCode());
         return result;
@@ -95,8 +95,8 @@ public class Order implements Serializable {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", ordernum=").append(ordernum);
-        sb.append(", userId=").append(userId);
-        sb.append(", addressId=").append(addressId);
+        sb.append(", user_id=").append(user_id);
+        sb.append(", address_id=").append(address_id);
         sb.append(", status=").append(status);
         sb.append(", totalprice=").append(totalprice);
         sb.append(", serialVersionUID=").append(serialVersionUID);

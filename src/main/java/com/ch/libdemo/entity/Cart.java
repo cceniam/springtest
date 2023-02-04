@@ -25,7 +25,7 @@ public class Cart implements Serializable {
      * 
      */
     @TableField(value = "product_id")
-    private Integer productId;
+    private Integer product_id;
 
     /**
      * 
@@ -43,7 +43,7 @@ public class Cart implements Serializable {
      * 
      */
     @TableField(value = "user_id")
-    private Integer userId;
+    private Integer user_id;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -61,10 +61,10 @@ public class Cart implements Serializable {
         }
         Cart other = (Cart) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getProductId() == null ? other.getProductId() == null : this.getProductId().equals(other.getProductId()))
+            && (this.getProduct_id() == null ? other.getProduct_id() == null : this.getProduct_id().equals(other.getProduct_id()))
             && (this.getBuycount() == null ? other.getBuycount() == null : this.getBuycount().equals(other.getBuycount()))
             && (this.getSumprice() == null ? other.getSumprice() == null : this.getSumprice().equals(other.getSumprice()))
-            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()));
+            && (this.getUser_id() == null ? other.getUser_id() == null : this.getUser_id().equals(other.getUser_id()));
     }
 
     @Override
@@ -72,10 +72,10 @@ public class Cart implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getProductId() == null) ? 0 : getProductId().hashCode());
+        result = prime * result + ((getProduct_id() == null) ? 0 : getProduct_id().hashCode());
         result = prime * result + ((getBuycount() == null) ? 0 : getBuycount().hashCode());
         result = prime * result + ((getSumprice() == null) ? 0 : getSumprice().hashCode());
-        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + ((getUser_id() == null) ? 0 : getUser_id().hashCode());
         return result;
     }
 
@@ -86,10 +86,10 @@ public class Cart implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", productId=").append(productId);
+        sb.append(", product_id=").append(product_id);
         sb.append(", buycount=").append(buycount);
         sb.append(", sumprice=").append(sumprice);
-        sb.append(", userId=").append(userId);
+        sb.append(", user_id=").append(user_id);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
